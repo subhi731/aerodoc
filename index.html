@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AeroDoc — Aircraft Technical Records Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0a0f1e;--navy2:#0f1629;--navy3:#141d35;--panel:#181f38;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --accent:#00d4ff;--amber:#f59e0b;--green:#10b981;--red:#ef4444;--purple:#a78bfa;
+  --text1:#f0f4ff;--text2:#8b9dc3;--text3:#4a5a80;
+  --mono:'DM Mono',monospace;--sans:'Sora',sans-serif;
+  --r:6px;--r2:10px;
+}
+body{background:var(--navy);color:var(--text1);font-family:var(--sans);font-size:13px;min-height:100vh}
+.shell{display:grid;grid-template-columns:210px 1fr;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:hidden}
+.logo-area{padding:18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo-icon{width:34px;height:34px;background:var(--accent);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--navy);flex-shrink:0}
+.logo-text{font-size:15px;font-weight:600;color:var(--text1);letter-spacing:-0.3px}
+.logo-sub{font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:0.5px}
+.nav{padding:10px 8px;flex:1;overflow-y:auto}
+.nav-section{font-size:9px;font-family:var(--mono);color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;padding:14px 8px 5px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r);color:var(--text2);cursor:pointer;transition:all .15s;font-size:12.5px;margin-bottom:1px;border:1px solid transparent;user-select:none}
+.nav-item:hover{background:rgba(255,255,255,0.05);color:var(--text1)}
+.nav-item.active{background:rgba(0,212,255,0.09);color:var(--accent);border-color:rgba(0,212,255,0.18)}
+.nav-item i{font-size:15px;flex-shrink:0}
+.nav-badge{margin-left:auto;font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:20px;background:rgba(0,212,255,0.14);color:var(--accent)}
+.nav-badge.red{background:rgba(239,68,68,0.14);color:#f87171}
+.sidebar-footer{padding:12px;border-top:1px solid var(--border);flex-shrink:0}
+.user-pill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--r);background:var(--navy3)}
+.avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;flex-shrink:0}
+.user-name{font-size:12px;color:var(--text1);font-weight:500}
+.user-role{font-size:10px;color:var(--text3)}
+
+/* ── MAIN ── */
+.main{display:flex;flex-direction:column;overflow:hidden;min-width:0}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--navy2);border-bottom:1px solid var(--border);padding:11px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20;flex-shrink:0}
+.breadcrumb{font-size:11px;color:var(--text3);font-family:var(--mono)}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--navy3);border:1px solid var(--border);border-radius:var(--r2);padding:7px 12px;width:230px;cursor:text;transition:border .15s}
+.search-box:hover{border-color:var(--border2)}
+.search-box input{background:none;border:none;outline:none;color:var(--text1);font-family:var(--sans);font-size:12px;width:100%}
+.search-box input::placeholder{color:var(--text3)}
+.search-box i{font-size:14px;color:var(--text3);flex-shrink:0}
+.topbar-actions{display:flex;gap:8px;margin-left:auto}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r);font-size:12px;font-family:var(--sans);cursor:pointer;transition:all .15s;font-weight:500;border:none;text-decoration:none}
+.btn-primary{background:var(--accent);color:var(--navy)}
+.btn-primary:hover{background:#26dcff}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.btn-ghost:hover{background:rgba(255,255,255,0.05);color:var(--text1)}
+.btn-danger{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.25)}
+.btn-danger:hover{background:rgba(239,68,68,0.25)}
+.btn-sm{padding:5px 10px;font-size:11px}
+
+/* ── CONTENT ── */
+.content{padding:20px 24px;overflow-y:auto;flex:1}
+
+/* ── VIEWS ── */
+.view{display:none}
+.view.active{display:block}
+.page-title{font-size:22px;font-weight:300;color:var(--text1);letter-spacing:-0.5px;margin-bottom:4px}
+.page-sub{font-size:12px;color:var(--text3);margin-bottom:20px}
+
+/* ── STAT GRID ── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-grid-3{grid-template-columns:repeat(3,1fr)}
+.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:16px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat-card.cyan::before{background:var(--accent)}
+.stat-card.amber::before{background:var(--amber)}
+.stat-card.green::before{background:var(--green)}
+.stat-card.red::before{background:var(--red)}
+.stat-card.purple::before{background:var(--purple)}
+.stat-label{font-size:10px;font-family:var(--mono);color:var(--text3);letter-spacing:0.8px;margin-bottom:8px}
+.stat-value{font-size:30px;font-weight:300;letter-spacing:-1.5px;line-height:1}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:6px}
+
+/* ── CARD / TABLE ── */
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:20px;overflow:hidden}
+.card-header{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.card-title{font-size:13px;font-weight:500;color:var(--text1)}
+.card-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.card-body{padding:16px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse}
+thead th{font-size:10px;font-family:var(--mono);color:var(--text3);text-align:left;padding:10px 16px;border-bottom:1px solid var(--border);letter-spacing:0.8px;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s;cursor:pointer}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,0.03)}
+tbody td{padding:11px 16px;font-size:12.5px;vertical-align:middle}
+.mono-cell{font-family:var(--mono);font-size:11.5px}
+.empty-row td{text-align:center;padding:40px;color:var(--text3);font-family:var(--mono);font-size:12px}
+
+/* ── FILTERS ── */
+.filter-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filter-pill{padding:4px 12px;border-radius:20px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);color:var(--text3);background:transparent;transition:all .15s}
+.filter-pill:hover,.filter-pill.active{border-color:var(--accent);color:var(--accent);background:rgba(0,212,255,0.07)}
+.filter-input{background:var(--navy3);border:1px solid var(--border);border-radius:var(--r);padding:5px 10px;color:var(--text1);font-size:12px;font-family:var(--sans);outline:none;transition:border .15s}
+.filter-input:focus{border-color:var(--accent)}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;font-size:10px;font-family:var(--mono);font-weight:500;white-space:nowrap}
+.badge-green{background:rgba(16,185,129,.12);color:#34d399;border:1px solid rgba(16,185,129,.2)}
+.badge-amber{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
+.badge-red{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.2)}
+.badge-blue{background:rgba(0,212,255,.1);color:var(--accent);border:1px solid rgba(0,212,255,.2)}
+.badge-gray{background:rgba(139,157,195,.1);color:var(--text2);border:1px solid var(--border)}
+.badge-purple{background:rgba(167,139,250,.1);color:var(--purple);border:1px solid rgba(167,139,250,.2)}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+/* ── ICON ACTIONS ── */
+.row-actions{display:flex;gap:5px}
+.icon-btn{width:28px;height:28px;border-radius:var(--r);background:transparent;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text3);transition:all .15s;flex-shrink:0}
+.icon-btn:hover{border-color:var(--border2);color:var(--text1);background:rgba(255,255,255,0.05)}
+.icon-btn.danger:hover{border-color:rgba(239,68,68,.4);color:#f87171;background:rgba(239,68,68,.08)}
+
+/* ── TAGS ── */
+.tag{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-family:var(--mono);background:rgba(167,139,250,.1);color:var(--purple);border:1px solid rgba(167,139,250,.2);margin:2px}
+
+/* ── FORM ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:10px;font-family:var(--mono);color:var(--text3);letter-spacing:0.8px}
+.form-input,.form-select,.form-textarea{background:var(--navy3);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;color:var(--text1);font-size:12.5px;font-family:var(--sans);outline:none;transition:border .15s;width:100%}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234a5a80' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.form-textarea{min-height:80px;resize:vertical}
+.form-actions{display:flex;gap:8px;margin-top:16px}
+.form-section{margin-bottom:20px}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone{border:1.5px dashed var(--border2);border-radius:var(--r2);padding:36px 20px;text-align:center;cursor:pointer;background:var(--navy3);transition:all .2s;margin-bottom:16px;position:relative}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(0,212,255,.04)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-zone i{font-size:36px;color:var(--text3);display:block;margin-bottom:10px}
+.upload-zone .uz-title{font-size:13px;color:var(--text2);margin-bottom:4px}
+.upload-zone .uz-sub{font-size:11px;color:var(--text3)}
+
+/* ── PROGRESS ── */
+.progress-bar{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-top:4px}
+.progress-fill{height:100%;border-radius:2px;transition:width .3s}
+
+/* ── TIMELINE ── */
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:12px}
+.tl-left{display:flex;flex-direction:column;align-items:center}
+.tl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.tl-line{width:1px;background:var(--border);flex:1;margin-top:4px}
+.tl-item:last-child .tl-line{display:none}
+.tl-body{padding-bottom:16px}
+.tl-event{font-size:12.5px;color:var(--text1)}
+.tl-meta{font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:2px}
+
+/* ── NOTIFICATIONS ── */
+.notif{display:flex;gap:10px;padding:12px;border-radius:var(--r);background:var(--navy3);border:1px solid var(--border);margin-bottom:8px}
+.notif i{font-size:16px;flex-shrink:0;margin-top:1px}
+.notif-title{font-size:12.5px;color:var(--text1)}
+.notif-sub{font-size:11px;color:var(--text3);margin-top:2px;font-family:var(--mono)}
+.notif-crit i{color:var(--red)}
+.notif-warn i{color:var(--amber)}
+.notif-info i{color:var(--accent)}
+
+/* ── ATA GRID ── */
+.ata-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(95px,1fr));gap:8px}
+.ata-chip{background:var(--navy3);border:1px solid var(--border);border-radius:var(--r);padding:10px 8px;cursor:pointer;transition:all .15s;text-align:center}
+.ata-chip:hover{border-color:var(--accent);background:rgba(0,212,255,.05)}
+.ata-chip .ac-code{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:500}
+.ata-chip .ac-name{font-size:10px;color:var(--text3);margin-top:3px;line-height:1.3}
+.ata-chip .ac-count{font-size:10px;color:var(--text2);margin-top:4px;font-family:var(--mono)}
+
+/* ── EXP BAR ── */
+.exp-bar{display:flex;align-items:center;gap:8px;font-size:11px}
+.exp-fill{height:5px;border-radius:3px;flex:1;background:rgba(255,255,255,.06);overflow:hidden;position:relative}
+.exp-inner{height:100%;border-radius:3px}
+
+/* ── DETAIL ── */
+.detail-row{display:flex;flex-direction:column;gap:2px;padding:8px 0;border-bottom:1px solid var(--border)}
+.detail-row:last-child{border-bottom:none}
+.detail-key{font-size:10px;font-family:var(--mono);color:var(--text3);letter-spacing:0.5px}
+.detail-val{font-size:12.5px;color:var(--text1)}
+
+/* ── MODAL ── */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--panel);border:1px solid var(--border2);border-radius:var(--r2);width:560px;max-width:90vw;max-height:90vh;overflow-y:auto}
+.modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-size:14px;font-weight:500;color:var(--text1)}
+.modal-body{padding:20px}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+
+/* ── TOAST ── */
+.toast-area{position:fixed;bottom:20px;right:20px;z-index:200;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--panel);border:1px solid var(--border2);border-radius:var(--r);padding:12px 16px;min-width:260px;font-size:12.5px;color:var(--text1);animation:slideIn .2s ease;display:flex;align-items:center;gap:10px}
+.toast.success{border-left:3px solid var(--green)}
+.toast.error{border-left:3px solid var(--red)}
+.toast.info{border-left:3px solid var(--accent)}
+@keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ── LOADER ── */
+.loader{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.1);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* chart bars */
+.bar-group{display:flex;align-items:flex-end;gap:3px;height:60px}
+.bar-col{flex:1;border-radius:2px 2px 0 0;background:rgba(0,212,255,.25);min-width:4px;transition:background .15s}
+.bar-col:hover{background:var(--accent)}
+.bar-col.amber{background:rgba(245,158,11,.3)}
+.bar-col.red{background:rgba(239,68,68,.3)}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ═══════════════════════ SIDEBAR ═══════════════════════ -->
+  <nav class="sidebar">
+    <div class="logo-area">
+      <div class="logo-icon"><i class="ti ti-plane-tilt"></i></div>
+      <div>
+        <div class="logo-text">AeroDoc</div>
+        <div class="logo-sub">Technical Records</div>
+      </div>
+    </div>
+    <div class="nav">
+      <div class="nav-section">Overview</div>
+      <div class="nav-item active" data-view="dashboard"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+      <div class="nav-item" data-view="fleet"><i class="ti ti-plane"></i> Fleet Registry <span class="nav-badge" id="nb-aircraft">0</span></div>
+      <div class="nav-section">Records</div>
+      <div class="nav-item" data-view="documents"><i class="ti ti-files"></i> Documents <span class="nav-badge" id="nb-docs">0</span></div>
+      <div class="nav-item" data-view="upload"><i class="ti ti-cloud-upload"></i> Upload</div>
+      <div class="nav-item" data-view="ata"><i class="ti ti-sitemap"></i> ATA Chapters</div>
+      <div class="nav-section">Compliance</div>
+      <div class="nav-item" data-view="airworthiness"><i class="ti ti-certificate"></i> Airworthiness <span class="nav-badge red" id="nb-ads">0</span></div>
+      <div class="nav-item" data-view="sbs"><i class="ti ti-file-check"></i> Service Bulletins</div>
+      <div class="nav-item" data-view="maintenance"><i class="ti ti-tool"></i> Maintenance</div>
+      <div class="nav-section">Analytics</div>
+      <div class="nav-item" data-view="analytics"><i class="ti ti-chart-bar"></i> Reports</div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-pill">
+        <div class="avatar">AK</div>
+        <div>
+          <div class="user-name">Arjun Kumar</div>
+          <div class="user-role">QA Engineer</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════ MAIN ═══════════════════════ -->
+  <div class="main">
+    <div class="topbar">
+      <div class="breadcrumb" id="breadcrumb">Platform / Dashboard</div>
+      <div class="search-box">
+        <i class="ti ti-search"></i>
+        <input type="text" id="globalSearch" placeholder="Search documents…" onkeydown="if(event.key==='Enter')doGlobalSearch()">
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost" onclick="switchView('airworthiness')"><i class="ti ti-bell"></i> Alerts</button>
+        <button class="btn btn-primary" onclick="switchView('upload')"><i class="ti ti-plus"></i> Upload</button>
+      </div>
+    </div>
+
+    <div class="content" id="content-area">
+
+      <!-- ══════════ DASHBOARD ══════════ -->
+      <div class="view active" id="view-dashboard">
+        <div class="page-title">Fleet Overview</div>
+        <div class="page-sub" id="dash-sub">Loading…</div>
+
+        <div class="stat-grid">
+          <div class="stat-card cyan"><div class="stat-label">TOTAL AIRCRAFT</div><div class="stat-value" id="s-aircraft">—</div><div class="stat-sub">Registered in fleet</div></div>
+          <div class="stat-card amber"><div class="stat-label">DOCUMENTS</div><div class="stat-value" id="s-docs">—</div><div class="stat-sub">Total records</div></div>
+          <div class="stat-card red"><div class="stat-label">OVERDUE ADs</div><div class="stat-value" id="s-overdue" style="color:var(--red)">—</div><div class="stat-sub">Immediate action required</div></div>
+          <div class="stat-card green"><div class="stat-label">AI EXTRACTED</div><div class="stat-value" id="s-ai">—</div><div class="stat-sub">Auto-processed documents</div></div>
+        </div>
+
+        <div class="two-col">
+          <div class="card" style="margin:0">
+            <div class="card-header"><div><div class="card-title">Critical Alerts</div><div class="card-sub" id="alert-sub">Loading…</div></div></div>
+            <div class="card-body" id="alerts-list"><div style="color:var(--text3);font-size:12px;font-family:var(--mono)">Loading alerts…</div></div>
+          </div>
+          <div class="card" style="margin:0">
+            <div class="card-header"><div><div class="card-title">Fleet Quick View</div><div class="card-sub">Status at a glance</div></div>
+              <button class="btn btn-ghost btn-sm" onclick="switchView('fleet')">View all <i class="ti ti-arrow-right" style="font-size:11px"></i></button>
+            </div>
+            <div style="overflow:auto">
+              <table>
+                <thead><tr><th>REG</th><th>TYPE</th><th>DOCS</th><th>STATUS</th></tr></thead>
+                <tbody id="dash-fleet-body"><tr class="empty-row"><td colspan="4">Loading…</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ FLEET ══════════ -->
+      <div class="view" id="view-fleet">
+        <div class="page-title">Fleet Registry</div>
+        <div class="page-sub">All registered aircraft · DGCA regulatory framework</div>
+        <div class="card">
+          <div class="card-header">
+            <div class="filter-bar">
+              <button class="filter-pill active" onclick="filterFleet('all',this)">All</button>
+              <button class="filter-pill" onclick="filterFleet('active',this)">Active</button>
+              <button class="filter-pill" onclick="filterFleet('grounded',this)">Grounded</button>
+              <button class="filter-pill" onclick="filterFleet('aog',this)">AOG</button>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-aircraft')"><i class="ti ti-plus"></i> Add Aircraft</button>
+          </div>
+          <div style="overflow:auto">
+            <table>
+              <thead><tr><th>MSN</th><th>REGISTRATION</th><th>TYPE</th><th>OPERATOR</th><th>MFR DATE</th><th>TOTAL FH</th><th>TOTAL FC</th><th>STATUS</th><th></th></tr></thead>
+              <tbody id="fleet-body"><tr class="empty-row"><td colspan="9">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ DOCUMENTS ══════════ -->
+      <div class="view" id="view-documents">
+        <div class="page-title">Document Library</div>
+        <div class="page-sub">Full-text search · AI-extracted metadata · ATA chapter tagging</div>
+        <div class="card">
+          <div class="card-header" style="flex-wrap:wrap;gap:10px">
+            <div class="filter-bar">
+              <button class="filter-pill active" onclick="filterDocs('',this)">All</button>
+              <button class="filter-pill" onclick="filterDocs('CRS',this)">CRS</button>
+              <button class="filter-pill" onclick="filterDocs('Work Order',this)">Work Orders</button>
+              <button class="filter-pill" onclick="filterDocs('AD Compliance',this)">AD Compliance</button>
+              <button class="filter-pill" onclick="filterDocs('SB Compliance',this)">SB Compliance</button>
+              <button class="filter-pill" onclick="filterDocs('Manual',this)">Manuals</button>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="switchView('upload')"><i class="ti ti-upload"></i> Upload</button>
+          </div>
+          <div style="overflow:auto">
+            <table>
+              <thead><tr><th>#</th><th>FILE NAME</th><th>AIRCRAFT</th><th>TYPE</th><th>ATA CHAPTER</th><th>EXTRACTED BY</th><th>STATUS</th><th>UPLOADED</th><th></th></tr></thead>
+              <tbody id="docs-body"><tr class="empty-row"><td colspan="9">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ DOCUMENT DETAIL ══════════ -->
+      <div class="view" id="view-doc-detail">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+          <button class="btn btn-ghost btn-sm" onclick="switchView('documents')"><i class="ti ti-arrow-left"></i> Back</button>
+          <div class="page-title" id="detail-filename" style="margin:0;font-size:16px">Document Detail</div>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" id="detail-reanalyse-btn" onclick="reanalyseCurrentDoc()"><i class="ti ti-refresh"></i> Re-analyse</button>
+            <button class="btn btn-ghost btn-sm" onclick="openReviewPage(currentDocId)" style="border-color:rgba(245,158,11,0.4);color:var(--amber)"><i class="ti ti-edit"></i> Review &amp; Correct</button>
+            <a class="btn btn-primary btn-sm" id="detail-download-btn" href="#" target="_blank"><i class="ti ti-download"></i> Download</a>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+          <div class="stat-card cyan"><div class="stat-label">AIRCRAFT</div><div class="stat-value" id="dd-reg" style="font-size:20px">—</div><div class="stat-sub" id="dd-type">—</div></div>
+          <div class="stat-card amber"><div class="stat-label">DOCUMENT TYPE</div><div class="stat-value" id="dd-doctype" style="font-size:15px;font-weight:400;line-height:1.3">—</div><div class="stat-sub" id="dd-uploaded">—</div></div>
+          <div class="stat-card green"><div class="stat-label">MAINTENANCE STATUS</div><div class="stat-value" id="dd-status" style="font-size:15px;font-weight:400">—</div><div class="stat-sub" id="dd-extracted-by">—</div></div>
+          <div class="stat-card purple"><div class="stat-label">ATA CHAPTERS</div><div id="dd-ata" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px"></div></div>
+        </div>
+        <div class="two-col" style="align-items:start">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="card" style="margin:0">
+              <div class="card-header"><div class="card-title"><i class="ti ti-plane" style="font-size:13px;margin-right:6px;color:var(--accent)"></i>Aircraft Information</div></div>
+              <div class="card-body" style="padding:0 16px">
+                <div style="display:grid;grid-template-columns:1fr 1fr">
+                  <div class="detail-row"><div class="detail-key">REGISTRATION</div><div class="detail-val" id="dd-f-reg">—</div></div>
+                  <div class="detail-row"><div class="detail-key">MSN</div><div class="detail-val" id="dd-f-msn">—</div></div>
+                  <div class="detail-row"><div class="detail-key">AIRCRAFT TYPE</div><div class="detail-val" id="dd-f-actype">—</div></div>
+                  <div class="detail-row"><div class="detail-key">OPERATOR</div><div class="detail-val" id="dd-f-operator">—</div></div>
+                  <div class="detail-row"><div class="detail-key">FLIGHT HOURS</div><div class="detail-val" id="dd-f-fh">—</div></div>
+                  <div class="detail-row"><div class="detail-key">FLIGHT CYCLES</div><div class="detail-val" id="dd-f-fc">—</div></div>
+                  <div class="detail-row"><div class="detail-key">HRS SINCE OVERHAUL</div><div class="detail-val" id="dd-f-hso">—</div></div>
+                  <div class="detail-row"><div class="detail-key">STATION</div><div class="detail-val" id="dd-f-station">—</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="card" style="margin:0">
+              <div class="card-header"><div class="card-title"><i class="ti ti-file-description" style="font-size:13px;margin-right:6px;color:var(--accent)"></i>Document Information</div></div>
+              <div class="card-body" style="padding:0 16px">
+                <div style="display:grid;grid-template-columns:1fr 1fr">
+                  <div class="detail-row"><div class="detail-key">DOCUMENT NUMBER</div><div class="detail-val" id="dd-f-docnum">—</div></div>
+                  <div class="detail-row"><div class="detail-key">WORK ORDER</div><div class="detail-val" id="dd-f-wo">—</div></div>
+                  <div class="detail-row"><div class="detail-key">NEXT DUE</div><div class="detail-val" id="dd-f-nextdue">—</div></div>
+                  <div class="detail-row"><div class="detail-key">SIGNATURES DETECTED</div><div class="detail-val" id="dd-f-sigs">—</div></div>
+                </div>
+                <div class="detail-row"><div class="detail-key">DATES FOUND</div><div id="dd-f-dates" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px">—</div></div>
+              </div>
+            </div>
+            <div class="card" style="margin:0">
+              <div class="card-header"><div class="card-title"><i class="ti ti-tool" style="font-size:13px;margin-right:6px;color:var(--amber)"></i>Maintenance Findings</div></div>
+              <div class="card-body" style="padding:0 16px">
+                <div class="detail-row"><div class="detail-key">DEFECT / FINDING</div><div class="detail-val" id="dd-f-defect" style="color:var(--text2);line-height:1.6;margin-top:4px;white-space:pre-wrap">—</div></div>
+                <div class="detail-row"><div class="detail-key">RECTIFICATION / ACTION TAKEN</div><div class="detail-val" id="dd-f-rect" style="color:var(--text2);line-height:1.6;margin-top:4px;white-space:pre-wrap">—</div></div>
+              </div>
+            </div>
+            <div class="card" style="margin:0">
+              <div class="card-header"><div class="card-title"><i class="ti ti-certificate" style="font-size:13px;margin-right:6px;color:var(--green)"></i>Compliance References</div></div>
+              <div class="card-body" style="padding:0 16px">
+                <div class="detail-row"><div class="detail-key">AIRWORTHINESS DIRECTIVES</div><div id="dd-f-ads" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
+                <div class="detail-row"><div class="detail-key">SERVICE BULLETINS</div><div id="dd-f-sbs" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
+              </div>
+            </div>
+            <div class="card" style="margin:0">
+              <div class="card-header"><div class="card-title"><i class="ti ti-users" style="font-size:13px;margin-right:6px;color:var(--purple)"></i>Personnel</div></div>
+              <div class="card-body" style="padding:0 16px">
+                <div class="detail-row"><div class="detail-key">PILOT NAME</div><div class="detail-val" id="dd-f-pilot_name">—</div></div>
+                <div class="detail-row"><div class="detail-key">PILOT REPORTED SNAG</div><div class="detail-val" id="dd-f-pilot_reported_snag" style="color:var(--text2);line-height:1.6;margin-top:4px">—</div></div>
+                <div class="detail-row"><div class="detail-key">ENGINEER / AME NAME</div><div class="detail-val" id="dd-f-engineer_name">—</div></div>
+                <div class="detail-row"><div class="detail-key">TECHNICIAN NAME</div><div class="detail-val" id="dd-f-technician_name">—</div></div>
+                <div class="detail-row"><div class="detail-key">AUTHORISATION NUMBER</div><div class="detail-val" id="dd-f-authorisation_number">—</div></div>
+                <div class="detail-row"><div class="detail-key">QC INSPECTOR</div><div class="detail-val" id="dd-f-qc_inspector">—</div></div>
+                <div class="detail-row"><div class="detail-key">QC ID</div><div class="detail-val" id="dd-f-qc_id">—</div></div>
+                <div class="detail-row"><div class="detail-key">ALL PERSONNEL</div><div id="dd-f-personnel" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
+                <div class="detail-row"><div class="detail-key">LICENCE NUMBERS</div><div id="dd-f-licences" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin:0">
+              <div class="card-header"><div class="card-title"><i class="ti ti-components" style="font-size:13px;margin-right:6px;color:var(--accent)"></i>Parts & Components</div></div>
+              <div class="card-body" style="padding:0 16px">
+                <div class="detail-row"><div class="detail-key">REMOVED PART NUMBERS</div><div id="dd-f-removed_part_numbers" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
+                <div class="detail-row"><div class="detail-key">REMOVED SERIAL NUMBERS</div><div id="dd-f-removed_serial_numbers" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
+                <div class="detail-row"><div class="detail-key">INSTALLED PART NUMBERS</div><div id="dd-f-installed_part_numbers" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
+                <div class="detail-row"><div class="detail-key">INSTALLED SERIAL NUMBERS</div><div id="dd-f-installed_serial_numbers" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
+                <div class="detail-row"><div class="detail-key">ALL PART NUMBERS</div><div id="dd-f-pns" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
+                <div class="detail-row"><div class="detail-key">ALL SERIAL NUMBERS</div><div id="dd-f-sns" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin:0">
+              <div class="card-header"><div class="card-title"><i class="ti ti-tool" style="font-size:13px;margin-right:6px;color:var(--amber)"></i>Maintenance Action</div></div>
+              <div class="card-body" style="padding:0 16px">
+                <div class="detail-row"><div class="detail-key">MAINTENANCE DONE BY ENGINEER</div><div class="detail-val" id="dd-f-maintenance_action" style="color:var(--text2);line-height:1.6;margin-top:4px">—</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin:0">
+            <div class="card-header">
+              <div class="card-title"><i class="ti ti-text-scan-2" style="font-size:13px;margin-right:6px;color:var(--accent)"></i>Full Extracted Text</div>
+              <span id="dd-extraction-badge"></span>
+            </div>
+            <div class="card-body">
+              <pre id="dd-extracted-text" style="font-family:var(--mono);font-size:11px;color:var(--text2);white-space:pre-wrap;word-break:break-word;max-height:700px;overflow-y:auto;line-height:1.7;background:var(--navy3);padding:12px;border-radius:var(--r);border:1px solid var(--border)">No text extracted from this document.</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ DOCUMENT REVIEW & CORRECT ══════════ -->
+      <div class="view" id="view-review">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+          <button class="btn btn-ghost btn-sm" onclick="openDocDetail(reviewDocId)"><i class="ti ti-arrow-left"></i> Back to Detail</button>
+          <div style="font-size:16px;font-weight:500;color:var(--text1)" id="review-filename">Review Document</div>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" onclick="reanalyseCurrentDoc()"><i class="ti ti-refresh"></i> Re-analyse</button>
+            <button class="btn btn-primary" onclick="saveCorrections()"><i class="ti ti-device-floppy"></i> Save Corrections</button>
+          </div>
+        </div>
+
+        <!-- Split view -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;height:calc(100vh - 140px)">
+
+          <!-- LEFT — PDF as JPG -->
+          <div class="card" style="margin:0;display:flex;flex-direction:column;overflow:hidden">
+            <div class="card-header" style="flex-shrink:0">
+              <div class="card-title"><i class="ti ti-file-type-pdf" style="color:var(--red);margin-right:6px"></i>Original Document</div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <button class="icon-btn" onclick="changePage(-1)" id="prev-page-btn"><i class="ti ti-chevron-left"></i></button>
+                <span style="font-family:var(--mono);font-size:11px;color:var(--text3)" id="page-indicator">Page 1 / 1</span>
+                <button class="icon-btn" onclick="changePage(1)" id="next-page-btn"><i class="ti ti-chevron-right"></i></button>
+              </div>
+            </div>
+            <div style="flex:1;overflow:auto;padding:12px;background:var(--navy3);display:flex;align-items:flex-start;justify-content:center">
+              <div id="pdf-preview-area" style="text-align:center">
+                <div style="color:var(--text3);font-family:var(--mono);font-size:12px;padding:40px">
+                  <span class="loader"></span><br><br>Loading preview...
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT — Editable fields -->
+          <div class="card" style="margin:0;display:flex;flex-direction:column;overflow:hidden">
+            <div class="card-header" style="flex-shrink:0">
+              <div class="card-title"><i class="ti ti-edit" style="color:var(--amber);margin-right:6px"></i>Extracted Fields — Edit to Correct</div>
+              <span id="correction-badge" style="font-size:10px;font-family:var(--mono);color:var(--text3)">No changes yet</span>
+            </div>
+            <div style="flex:1;overflow-y:auto;padding:16px">
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+
+                <div class="form-group">
+                  <div class="form-label">DOCUMENT TYPE</div>
+                  <select class="form-select" id="cor-doctype">
+                    <option value="CRS">CRS — Release to Service</option>
+                    <option value="Work Order">Work Order / Job Card</option>
+                    <option value="AD Compliance">AD Compliance</option>
+                    <option value="SB Compliance">SB Compliance</option>
+                    <option value="Maintenance Log">Maintenance Log</option>
+                    <option value="Inspection Report">Inspection Report</option>
+                    <option value="Manual">Technical Manual</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">MAINTENANCE STATUS</div>
+                  <select class="form-select" id="cor-status">
+                    <option value="">Not detected</option>
+                    <option value="Serviceable">Serviceable</option>
+                    <option value="Unserviceable">Unserviceable</option>
+                    <option value="Defect Found">Defect Found</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">REGISTRATION</div>
+                  <input class="form-input" id="cor-registration" placeholder="e.g. VT-ABC">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">MSN</div>
+                  <input class="form-input" id="cor-msn" placeholder="Manufacturer serial number">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">AIRCRAFT TYPE</div>
+                  <input class="form-input" id="cor-aircraft_type" placeholder="e.g. Airbus A320-232">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">OPERATOR</div>
+                  <input class="form-input" id="cor-operator" placeholder="Airline name">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">DOCUMENT NUMBER</div>
+                  <input class="form-input" id="cor-document_number" placeholder="Form / reference number">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">WORK ORDER</div>
+                  <input class="form-input" id="cor-work_order" placeholder="Work order number">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">FLIGHT HOURS</div>
+                  <input class="form-input" id="cor-flight_hours" placeholder="Total FH">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">FLIGHT CYCLES</div>
+                  <input class="form-input" id="cor-flight_cycles" placeholder="Total FC">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">STATION</div>
+                  <input class="form-input" id="cor-station" placeholder="e.g. BLR, HYD, DEL">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">NEXT DUE</div>
+                  <input class="form-input" id="cor-next_due" placeholder="Next due date or FH">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">ATA CODES (comma separated)</div>
+                  <input class="form-input" id="cor-ata_codes" placeholder="e.g. 27, 32, 33">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">PART NUMBERS (comma separated)</div>
+                  <input class="form-input" id="cor-part_numbers" placeholder="e.g. D6-55242-3, PR-1776">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">SERIAL NUMBERS (comma separated)</div>
+                  <input class="form-input" id="cor-serial_numbers" placeholder="e.g. A4421-BX, SN-92B77">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">PERSONNEL (comma separated)</div>
+                  <input class="form-input" id="cor-personnel" placeholder="e.g. Arjun Kumar, M. Patel">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">LICENCE NUMBERS (comma separated)</div>
+                  <input class="form-input" id="cor-licence_numbers" placeholder="e.g. DGCA/AME/B1.1/2019/04421">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">AD REFERENCES (comma separated)</div>
+                  <input class="form-input" id="cor-airworthiness_directives" placeholder="e.g. AD 2024-15-12">
+                </div>
+
+                <div class="form-group full">
+                  <div class="form-label">DEFECT / FINDING</div>
+                  <textarea class="form-textarea" id="cor-defect_description" placeholder="Describe the defect or finding…" style="min-height:70px"></textarea>
+                </div>
+
+                <div class="form-group full">
+                  <div class="form-label">RECTIFICATION / ACTION TAKEN</div>
+                  <textarea class="form-textarea" id="cor-rectification" placeholder="Describe corrective action…" style="min-height:70px"></textarea>
+                </div>
+
+                <div class="form-group full" style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px">
+                  <div style="font-size:10px;font-family:var(--mono);color:var(--accent);letter-spacing:1px;margin-bottom:10px">PILOT INFORMATION</div>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">PILOT NAME</div>
+                  <input class="form-input" id="cor-pilot_name" placeholder="e.g. Capt. R. Sharma">
+                </div>
+
+                <div class="form-group full">
+                  <div class="form-label">PILOT REPORTED SNAG</div>
+                  <textarea class="form-textarea" id="cor-pilot_reported_snag" placeholder="Exact snag reported by pilot…" style="min-height:60px"></textarea>
+                </div>
+
+                <div class="form-group full" style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px">
+                  <div style="font-size:10px;font-family:var(--mono);color:var(--amber);letter-spacing:1px;margin-bottom:10px">ENGINEER / TECHNICIAN</div>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">ENGINEER / AME NAME</div>
+                  <input class="form-input" id="cor-engineer_name" placeholder="e.g. Arjun Kumar">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">TECHNICIAN NAME</div>
+                  <input class="form-input" id="cor-technician_name" placeholder="Technician who assisted">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">AUTHORISATION NUMBER</div>
+                  <input class="form-input" id="cor-authorisation_number" placeholder="e.g. AUTH-MRO-0042/ATA32">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">QC INSPECTOR</div>
+                  <input class="form-input" id="cor-qc_inspector" placeholder="QC Inspector name">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">QC ID</div>
+                  <input class="form-input" id="cor-qc_id" placeholder="e.g. QC-2291">
+                </div>
+
+                <div class="form-group full">
+                  <div class="form-label">MAINTENANCE ACTION BY ENGINEER</div>
+                  <textarea class="form-textarea" id="cor-maintenance_action" placeholder="Exact maintenance work performed by engineer…" style="min-height:70px"></textarea>
+                </div>
+
+                <div class="form-group full" style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px">
+                  <div style="font-size:10px;font-family:var(--mono);color:var(--green);letter-spacing:1px;margin-bottom:10px">REMOVED / INSTALLED COMPONENTS</div>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">REMOVED PART NUMBERS</div>
+                  <input class="form-input" id="cor-removed_part_numbers" placeholder="e.g. 1234-567, A328">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">REMOVED SERIAL NUMBERS</div>
+                  <input class="form-input" id="cor-removed_serial_numbers" placeholder="e.g. SN-89A45, 33268">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">INSTALLED PART NUMBERS</div>
+                  <input class="form-input" id="cor-installed_part_numbers" placeholder="e.g. 1234-567, D6-55242-3">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">INSTALLED SERIAL NUMBERS</div>
+                  <input class="form-input" id="cor-installed_serial_numbers" placeholder="e.g. SN-92B77, A4421-BX">
+                </div>
+
+                <div class="form-group full" style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px">
+                  <div style="font-size:10px;font-family:var(--mono);color:var(--red);letter-spacing:1px;margin-bottom:10px">AD / SB REFERENCES</div>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">AD — AIRWORTHINESS DIRECTIVES</div>
+                  <input class="form-input" id="cor-airworthiness_directives" placeholder="e.g. AD 2024-15-12, AD 2023-08-22">
+                </div>
+
+                <div class="form-group">
+                  <div class="form-label">SB — SERVICE BULLETINS</div>
+                  <input class="form-input" id="cor-service_bulletins" placeholder="e.g. SB A320-32-1088">
+                </div>
+
+              </div>
+
+              <div style="padding:12px;background:var(--navy3);border-radius:var(--r);border:1px solid var(--border);font-size:11px;color:var(--text3);font-family:var(--mono)">
+                <i class="ti ti-info-circle" style="color:var(--accent)"></i>
+                Changes are saved to the database only. Original PDF is never modified.
+                Fields left blank will be cleared. Re-analyse will overwrite manual corrections.
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ UPLOAD ══════════ -->
+      <div class="view" id="view-upload">
+        <div class="page-title">Upload Document</div>
+        <div class="page-sub">PDF files are auto-extracted · Supports CRS, Work Orders, AD/SB compliance, manuals</div>
+        <div class="two-col" style="align-items:start">
+          <div>
+            <div class="upload-zone" id="dropZone">
+              <input type="file" id="fileInput" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" onchange="fileSelected(this)">
+              <i class="ti ti-cloud-upload"></i>
+              <div class="uz-title">Drop PDF files here</div>
+              <div class="uz-sub" id="upload-file-name">or click to browse · Max 50 MB</div>
+            </div>
+            <div class="card" style="margin-bottom:16px">
+              <div class="card-body">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <div class="form-label">AIRCRAFT *</div>
+                    <select class="form-select" id="up-aircraft"><option value="">Select aircraft…</option></select>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-label">DOCUMENT TYPE</div>
+                    <select class="form-select" id="up-doctype">
+                      <option value="CRS">CRS — Certificate of Release to Service</option>
+                      <option value="Work Order">Work Order / Job Card</option>
+                      <option value="AD Compliance">AD Compliance Record</option>
+                      <option value="SB Compliance">SB Compliance Record</option>
+                      <option value="Maintenance Log">Maintenance Log</option>
+                      <option value="Manual">Technical Manual</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-label">ATA CHAPTER OVERRIDE</div>
+                    <input class="form-input" id="up-chapter" placeholder="Auto-detected from PDF…">
+                  </div>
+                  <div class="form-group">
+                    <div class="form-label">EXTRACTION MODE</div>
+                    <select class="form-select" id="up-useai">
+                      <option value="claude">&#x2728; Claude API — Best, any airline format</option>
+                      <option value="ollama">&#x1F916; Ollama llama3.2 — Free, typed PDFs</option>
+                      <option value="llava">&#x1F441; LLaVA Vision — Handwritten / Scanned</option>
+                      <option value="regex">&#x26A1; Regex — Fast, basic, always free</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-primary" onclick="uploadDocument()" id="upload-btn" style="flex:1"><i class="ti ti-upload"></i> Upload &amp; Extract</button>
+                  <button class="btn btn-ghost" onclick="resetUpload()"><i class="ti ti-refresh"></i></button>
+                </div>
+                <div id="upload-progress" style="display:none;margin-top:12px">
+                  <div class="progress-bar"><div class="progress-fill" id="upload-progress-fill" style="width:0%;background:var(--accent)"></div></div>
+                  <div style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:6px" id="upload-status">Uploading…</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin:0">
+            <div class="card-header"><div class="card-title">What Claude AI extracts</div></div>
+            <div class="card-body">
+              <div class="detail-row"><div class="detail-key">REGISTRATION &amp; MSN</div><div class="detail-val" style="color:var(--text2)">Aircraft identity fields</div></div>
+              <div class="detail-row"><div class="detail-key">ATA CHAPTERS</div><div class="detail-val" style="color:var(--text2)">Auto-tagged chapter codes</div></div>
+              <div class="detail-row"><div class="detail-key">PART &amp; SERIAL NUMBERS</div><div class="detail-val" style="color:var(--text2)">P/N, S/N arrays</div></div>
+              <div class="detail-row"><div class="detail-key">PERSONNEL &amp; LICENCES</div><div class="detail-val" style="color:var(--text2)">AME names, licence numbers</div></div>
+              <div class="detail-row"><div class="detail-key">MAINTENANCE STATUS</div><div class="detail-val" style="color:var(--text2)">Serviceable / Defect / Unserviceable</div></div>
+              <div class="detail-row"><div class="detail-key">DATES &amp; EXPIRY</div><div class="detail-val" style="color:var(--text2)">Next-due, validity dates, FH/FC</div></div>
+              <div class="detail-row"><div class="detail-key">AD / SB NUMBERS</div><div class="detail-val" style="color:var(--text2)">Directive reference extraction</div></div>
+              <div class="detail-row"><div class="detail-key">DEFECT &amp; RECTIFICATION</div><div class="detail-val" style="color:var(--text2)">Finding + corrective action</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ ATA ══════════ -->
+      <div class="view" id="view-ata">
+        <div class="page-title">ATA Chapter Index</div>
+        <div class="page-sub">Click any chapter to filter documents · Counts from live data</div>
+        <div class="ata-grid" id="ata-grid">
+          <div style="color:var(--text3);font-family:var(--mono);font-size:12px;grid-column:1/-1;text-align:center;padding:40px">Loading…</div>
+        </div>
+      </div>
+
+      <!-- ══════════ AIRWORTHINESS ══════════ -->
+      <div class="view" id="view-airworthiness">
+        <div class="page-title">Airworthiness Directives</div>
+        <div class="page-sub">Track AD compliance per aircraft · Auto-flagged from uploaded documents</div>
+        <div class="stat-grid stat-grid-3">
+          <div class="stat-card red"><div class="stat-label">OVERDUE</div><div class="stat-value" id="ad-overdue" style="color:var(--red)">—</div><div class="stat-sub">Immediate action</div></div>
+          <div class="stat-card amber"><div class="stat-label">DUE WITHIN 30 DAYS</div><div class="stat-value" id="ad-soon" style="color:var(--amber)">—</div><div class="stat-sub">Schedule now</div></div>
+          <div class="stat-card green"><div class="stat-label">COMPLIANT</div><div class="stat-value" id="ad-compliant" style="color:var(--green)">—</div><div class="stat-sub">ADs closed</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="filter-bar">
+              <button class="filter-pill active" onclick="filterADs('',this)">All</button>
+              <button class="filter-pill" onclick="filterADs('overdue',this)">Overdue</button>
+              <button class="filter-pill" onclick="filterADs('open',this)">Open</button>
+              <button class="filter-pill" onclick="filterADs('compliant',this)">Compliant</button>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-ad')"><i class="ti ti-plus"></i> Add AD</button>
+          </div>
+          <div style="overflow:auto">
+            <table>
+              <thead><tr><th>AD NUMBER</th><th>AIRCRAFT</th><th>ATA</th><th>DESCRIPTION</th><th>DUE DATE</th><th>STATUS</th><th></th></tr></thead>
+              <tbody id="ads-body"><tr class="empty-row"><td colspan="7">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ SERVICE BULLETINS ══════════ -->
+      <div class="view" id="view-sbs">
+        <div class="page-title">Service Bulletins</div>
+        <div class="page-sub">Track SB compliance per aircraft</div>
+        <div class="card">
+          <div class="card-header">
+            <div class="filter-bar">
+              <button class="filter-pill active" onclick="filterSBs('',this)">All</button>
+              <button class="filter-pill" onclick="filterSBs('open',this)">Open</button>
+              <button class="filter-pill" onclick="filterSBs('compliant',this)">Compliant</button>
+              <button class="filter-pill" onclick="filterSBs('not-applicable',this)">N/A</button>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-sb')"><i class="ti ti-plus"></i> Add SB</button>
+          </div>
+          <div style="overflow:auto">
+            <table>
+              <thead><tr><th>SB NUMBER</th><th>AIRCRAFT</th><th>ATA</th><th>DESCRIPTION</th><th>DUE DATE</th><th>STATUS</th><th></th></tr></thead>
+              <tbody id="sbs-body"><tr class="empty-row"><td colspan="7">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ MAINTENANCE ══════════ -->
+      <div class="view" id="view-maintenance">
+        <div class="page-title">Maintenance Checks</div>
+        <div class="page-sub">A / B / C / D check scheduling and status</div>
+        <div class="card">
+          <div class="card-header">
+            <div class="filter-bar">
+              <button class="filter-pill active" onclick="filterChecks('',this)">All</button>
+              <button class="filter-pill" onclick="filterChecks('on-track',this)">On Track</button>
+              <button class="filter-pill" onclick="filterChecks('due-soon',this)">Due Soon</button>
+              <button class="filter-pill" onclick="filterChecks('overdue',this)">Overdue</button>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-check')"><i class="ti ti-plus"></i> Add Check</button>
+          </div>
+          <div style="overflow:auto">
+            <table>
+              <thead><tr><th>AIRCRAFT</th><th>CHECK TYPE</th><th>LAST COMPLETED</th><th>NEXT DUE</th><th>NEXT DUE FH</th><th>PROGRESS</th><th>STATUS</th><th></th></tr></thead>
+              <tbody id="checks-body"><tr class="empty-row"><td colspan="8">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ ANALYTICS ══════════ -->
+      <div class="view" id="view-analytics">
+        <div class="page-title">Analytics &amp; Reports</div>
+        <div class="page-sub">Document processing stats and fleet health metrics</div>
+        <div class="two-col">
+          <div class="card" style="margin:0">
+            <div class="card-header"><div class="card-title">Maintenance status distribution</div></div>
+            <div class="card-body" id="analytics-status">Loading…</div>
+          </div>
+          <div class="card" style="margin:0">
+            <div class="card-header"><div class="card-title">Document types</div></div>
+            <div class="card-body" id="analytics-types">Loading…</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Top ATA chapters by document count</div></div>
+          <div class="card-body" id="analytics-ata">Loading…</div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- ════════════════════ MODALS ════════════════════ -->
+
+<!-- Add Aircraft -->
+<div class="modal-backdrop" id="modal-aircraft">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Register Aircraft</div><button class="icon-btn" onclick="closeModal('modal-aircraft')"><i class="ti ti-x"></i></button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><div class="form-label">REGISTRATION *</div><input class="form-input" id="ac-reg" placeholder="VT-ABC"></div>
+        <div class="form-group"><div class="form-label">MSN *</div><input class="form-input" id="ac-msn" placeholder="12345"></div>
+        <div class="form-group"><div class="form-label">AIRCRAFT TYPE *</div><input class="form-input" id="ac-type" placeholder="Boeing 737-800"></div>
+        <div class="form-group"><div class="form-label">OPERATOR *</div><input class="form-input" id="ac-operator" placeholder="IndiGo"></div>
+        <div class="form-group"><div class="form-label">MANUFACTURER</div><input class="form-input" id="ac-mfr" placeholder="Boeing"></div>
+        <div class="form-group"><div class="form-label">MANUFACTURE DATE</div><input class="form-input" id="ac-mfrdate" type="date"></div>
+        <div class="form-group"><div class="form-label">TOTAL FH</div><input class="form-input" id="ac-fh" type="number" placeholder="0"></div>
+        <div class="form-group"><div class="form-label">TOTAL FC</div><input class="form-input" id="ac-fc" type="number" placeholder="0"></div>
+        <div class="form-group full"><div class="form-label">STATUS</div>
+          <select class="form-select" id="ac-status"><option value="active">Active</option><option value="grounded">Grounded</option><option value="aog">AOG</option><option value="stored">Stored</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-aircraft')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitAircraft()">Register Aircraft</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add AD -->
+<div class="modal-backdrop" id="modal-ad">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Add Airworthiness Directive</div><button class="icon-btn" onclick="closeModal('modal-ad')"><i class="ti ti-x"></i></button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><div class="form-label">AIRCRAFT *</div><select class="form-select" id="ad-aircraft"><option value="">Select…</option></select></div>
+        <div class="form-group"><div class="form-label">AD NUMBER *</div><input class="form-input" id="ad-number" placeholder="AD 2024-15-12"></div>
+        <div class="form-group"><div class="form-label">ATA CHAPTER</div><input class="form-input" id="ad-ata" placeholder="32"></div>
+        <div class="form-group"><div class="form-label">STATUS</div>
+          <select class="form-select" id="ad-status"><option value="open">Open</option><option value="compliant">Compliant</option><option value="overdue">Overdue</option><option value="n/a">N/A</option></select>
+        </div>
+        <div class="form-group"><div class="form-label">DUE DATE</div><input class="form-input" id="ad-due" type="date"></div>
+        <div class="form-group"><div class="form-label">EFFECTIVE DATE</div><input class="form-input" id="ad-eff" type="date"></div>
+        <div class="form-group full"><div class="form-label">DESCRIPTION</div><textarea class="form-textarea" id="ad-desc" placeholder="Brief description of the AD requirement…"></textarea></div>
+        <div class="form-group full"><div class="form-label">NOTES</div><input class="form-input" id="ad-notes" placeholder="Optional notes…"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-ad')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitAD()">Save AD</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add SB -->
+<div class="modal-backdrop" id="modal-sb">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Add Service Bulletin</div><button class="icon-btn" onclick="closeModal('modal-sb')"><i class="ti ti-x"></i></button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><div class="form-label">AIRCRAFT *</div><select class="form-select" id="sb-aircraft"><option value="">Select…</option></select></div>
+        <div class="form-group"><div class="form-label">SB NUMBER *</div><input class="form-input" id="sb-number" placeholder="SB 737-27-1242"></div>
+        <div class="form-group"><div class="form-label">ATA CHAPTER</div><input class="form-input" id="sb-ata" placeholder="27"></div>
+        <div class="form-group"><div class="form-label">STATUS</div>
+          <select class="form-select" id="sb-status"><option value="open">Open</option><option value="compliant">Compliant</option><option value="not-applicable">Not Applicable</option></select>
+        </div>
+        <div class="form-group"><div class="form-label">DUE DATE</div><input class="form-input" id="sb-due" type="date"></div>
+        <div class="form-group"><div class="form-label">REVISION</div><input class="form-input" id="sb-rev" placeholder="Rev 1"></div>
+        <div class="form-group full"><div class="form-label">DESCRIPTION</div><textarea class="form-textarea" id="sb-desc" placeholder="Brief description…"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-sb')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitSB()">Save SB</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Maintenance Check -->
+<div class="modal-backdrop" id="modal-check">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Add Maintenance Check</div><button class="icon-btn" onclick="closeModal('modal-check')"><i class="ti ti-x"></i></button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><div class="form-label">AIRCRAFT *</div><select class="form-select" id="chk-aircraft"><option value="">Select…</option></select></div>
+        <div class="form-group"><div class="form-label">CHECK TYPE *</div>
+          <select class="form-select" id="chk-type"><option value="A">A-Check</option><option value="B">B-Check</option><option value="C">C-Check</option><option value="D">D-Check</option></select>
+        </div>
+        <div class="form-group"><div class="form-label">LAST COMPLETED</div><input class="form-input" id="chk-last" type="date"></div>
+        <div class="form-group"><div class="form-label">NEXT DUE DATE</div><input class="form-input" id="chk-next" type="date"></div>
+        <div class="form-group"><div class="form-label">NEXT DUE FH</div><input class="form-input" id="chk-fh" type="number" placeholder="15000"></div>
+        <div class="form-group"><div class="form-label">WORK ORDER</div><input class="form-input" id="chk-wo" placeholder="WO-1234"></div>
+        <div class="form-group"><div class="form-label">STATUS</div>
+          <select class="form-select" id="chk-status"><option value="on-track">On Track</option><option value="due-soon">Due Soon</option><option value="overdue">Overdue</option></select>
+        </div>
+        <div class="form-group"><div class="form-label">NOTES</div><input class="form-input" id="chk-notes" placeholder="Optional…"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-check')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitCheck()">Save Check</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast area -->
+<div class="toast-area" id="toast-area"></div>
+
+<script>
+const API = 'https://placeholder.onrender.com';
+
+// ─── State ───────────────────────────────────────────────────────────────────
+let allAircraft = [], allDocs = [], allADs = [], allSBs = [], allChecks = [];
+let currentView = 'dashboard';
+
+// ─── Routing ─────────────────────────────────────────────────────────────────
+const breadcrumbs = {
+  dashboard:'Platform / Dashboard', fleet:'Platform / Fleet Registry',
+  documents:'Platform / Documents', upload:'Platform / Upload',
+  ata:'Platform / ATA Chapters', airworthiness:'Platform / Airworthiness',
+  sbs:'Platform / Service Bulletins', maintenance:'Platform / Maintenance',
+  analytics:'Platform / Analytics',
+  review:'Platform / Documents / Review',
+};
+function switchView(id) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const el = document.getElementById('view-'+id);
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    n.classList.toggle('active', n.dataset.view===id);
+  });
+  document.getElementById('breadcrumb').textContent = breadcrumbs[id]||'';
+  currentView = id;
+  if(id==='dashboard') loadDashboard();
+  if(id==='fleet') renderFleet('all');
+  if(id==='documents') renderDocs('');
+  if(id==='ata') renderATA();
+  if(id==='airworthiness') { loadADs(); loadStats(); }
+  if(id==='sbs') loadSBs();
+  if(id==='maintenance') loadChecks();
+  if(id==='analytics') loadAnalytics();
+}
+document.querySelectorAll('.nav-item[data-view]').forEach(n=>{
+  n.addEventListener('click',()=>switchView(n.dataset.view));
+});
+
+// ─── API helpers ─────────────────────────────────────────────────────────────
+async function apiFetch(path, opts={}) {
+  const r = await fetch(API+path, opts);
+  if(!r.ok) {
+    const err = await r.json().catch(()=>({detail:'Unknown error'}));
+    throw new Error(err.detail||r.statusText);
+  }
+  return r.json();
+}
+
+// ─── Toast ───────────────────────────────────────────────────────────────────
+function toast(msg, type='info') {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  const icons = {success:'ti-check',error:'ti-alert-triangle',info:'ti-info-circle'};
+  el.innerHTML = `<i class="ti ${icons[type]||'ti-info-circle'}"></i>${msg}`;
+  document.getElementById('toast-area').appendChild(el);
+  setTimeout(()=>el.remove(), 3500);
+}
+
+// ─── Modals ───────────────────────────────────────────────────────────────────
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  populateAircraftSelects();
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-backdrop').forEach(m=>{
+  m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');});
+});
+
+// ─── Badges ───────────────────────────────────────────────────────────────────
+function statusBadge(s) {
+  const map = {
+    active:'badge-green',grounded:'badge-red',aog:'badge-red',stored:'badge-gray',
+    compliant:'badge-green',overdue:'badge-red',open:'badge-amber','n/a':'badge-gray',
+    'not-applicable':'badge-gray','on-track':'badge-green','due-soon':'badge-amber',
+    Serviceable:'badge-green',Unserviceable:'badge-red','Defect Found':'badge-red',
+    completed:'badge-green',
+  };
+  const cls = map[s]||map[s?.toLowerCase()]||'badge-gray';
+  return `<span class="badge ${cls}"><span class="dot"></span> ${s||'—'}</span>`;
+}
+function formatDate(d) {
+  if(!d) return '—';
+  return d.split('T')[0];
+}
+
+// ─── Aircraft ─────────────────────────────────────────────────────────────────
+async function loadAircraft() {
+  allAircraft = await apiFetch('/aircraft');
+  document.getElementById('nb-aircraft').textContent = allAircraft.length;
+  populateAircraftSelects();
+  renderDashFleet();
+}
+
+function renderFleet(filter) {
+  const data = filter==='all' ? allAircraft : allAircraft.filter(a=>a.status===filter);
+  const docCount = id => allDocs.filter(d=>d.aircraft_id===id).length;
+  document.getElementById('fleet-body').innerHTML = data.length
+    ? data.map(a=>`
+      <tr>
+        <td class="mono-cell" style="color:var(--text3)">${a.msn}</td>
+        <td class="mono-cell" style="color:var(--accent)">${a.registration}</td>
+        <td>${a.aircraft_type}</td>
+        <td>${a.operator_name}</td>
+        <td class="mono-cell" style="color:var(--text3)">${a.manufacture_date||'—'}</td>
+        <td class="mono-cell">${a.total_fh?.toLocaleString()||'—'}</td>
+        <td class="mono-cell">${a.total_fc?.toLocaleString()||'—'}</td>
+        <td>${statusBadge(a.status)}</td>
+        <td><div class="row-actions">
+          <div class="icon-btn" title="View documents" onclick="viewAircraftDocs(${a.id})"><i class="ti ti-files"></i></div>
+          <div class="icon-btn danger" title="Delete" onclick="deleteAircraft(${a.id}, '${a.registration}')"><i class="ti ti-trash"></i></div>
+        </div></td>
+      </tr>`).join('')
+    : '<tr class="empty-row"><td colspan="9">No aircraft found</td></tr>';
+}
+
+function filterFleet(f, btn) {
+  document.querySelectorAll('#view-fleet .filter-pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  renderFleet(f);
+}
+
+function viewAircraftDocs(id) {
+  switchView('documents');
+  renderDocs('', id);
+}
+
+async function submitAircraft() {
+  const payload = {
+    registration: document.getElementById('ac-reg').value.trim().toUpperCase(),
+    msn: document.getElementById('ac-msn').value.trim(),
+    aircraft_type: document.getElementById('ac-type').value.trim(),
+    operator_name: document.getElementById('ac-operator').value.trim(),
+    manufacturer: document.getElementById('ac-mfr').value.trim()||null,
+    manufacture_date: document.getElementById('ac-mfrdate').value||null,
+    total_fh: parseFloat(document.getElementById('ac-fh').value)||0,
+    total_fc: parseInt(document.getElementById('ac-fc').value)||0,
+    status: document.getElementById('ac-status').value,
+  };
+  if(!payload.registration||!payload.msn||!payload.aircraft_type||!payload.operator_name) {
+    toast('Fill in all required fields','error'); return;
+  }
+  try {
+    await apiFetch('/aircraft',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    toast(`Aircraft ${payload.registration} registered`,'success');
+    closeModal('modal-aircraft');
+    await loadAircraft();
+    renderFleet('all');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function deleteAircraft(id, reg) {
+  if(!confirm(`Delete aircraft ${reg} and ALL its documents? This cannot be undone.`)) return;
+  try {
+    await apiFetch(`/aircraft/${id}`,{method:'DELETE'});
+    toast(`${reg} deleted`,'success');
+    await loadAircraft();
+    await loadDocs();
+    renderFleet('all');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+function populateAircraftSelects() {
+  const opts = allAircraft.map(a=>`<option value="${a.id}">${a.registration} · ${a.aircraft_type}</option>`).join('');
+  ['up-aircraft','ad-aircraft','sb-aircraft','chk-aircraft'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.innerHTML = '<option value="">Select aircraft…</option>' + opts;
+  });
+}
+
+// ─── Documents ────────────────────────────────────────────────────────────────
+async function loadDocs() {
+  allDocs = await apiFetch('/documents');
+  document.getElementById('nb-docs').textContent = allDocs.length;
+  renderDocs('');
+}
+
+function renderDocs(typeFilter='', aircraftFilter=null) {
+  let data = allDocs;
+  if(typeFilter) data = data.filter(d=>(d.document_type||'').toLowerCase().includes(typeFilter.toLowerCase()));
+  if(aircraftFilter) data = data.filter(d=>d.aircraft_id===aircraftFilter);
+  const body = document.getElementById('docs-body');
+  if(!data.length) { body.innerHTML='<tr class="empty-row"><td colspan="9">No documents found</td></tr>'; return; }
+  const aircraftMap = {};
+  allAircraft.forEach(a=>aircraftMap[a.id]=a.registration);
+  body.innerHTML = data.map(d=>{
+    const sd = d.structured_data||{};
+    const ata = sd.ata_codes ? sd.ata_codes.map(c=>`<span class="tag">${c}</span>`).join('') : (d.chapter&&d.chapter!=='unassigned'?`<span class="tag">${d.chapter.substring(0,20)}</span>`:'—');
+    const srcLabel = sd._source==='claude_vision'?'Claude Vision':sd._source==='claude_ai'?'Claude AI':sd._source==='ollama'?'Ollama AI':sd._source==='llava'?'LLaVA Vision':sd._source==='regex'?'Regex':sd._source==='regex_fallback'?'Regex':'—';
+    const srcClass = sd._source==='claude_vision'||sd._source==='claude_ai'?'badge-green':sd._source==='ollama'||sd._source==='llava'?'badge-blue':'badge-gray';
+    const src = `<span class="badge ${srcClass}">${srcLabel}</span>`;
+    const ms = sd.maintenance_status;
+    return `<tr onclick="openDocDetail(${d.id})" style="cursor:pointer">
+      <td class="mono-cell" style="color:var(--text3)">${d.id}</td>
+      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--accent)" title="${d.file_name}">${d.file_name}</td>
+      <td class="mono-cell" style="color:var(--text1)">${aircraftMap[d.aircraft_id]||d.aircraft_id}</td>
+      <td><span class="badge badge-gray">${d.document_type||'general'}</span></td>
+      <td>${ata}</td>
+      <td>${src}</td>
+      <td>${ms?statusBadge(ms):'—'}</td>
+      <td class="mono-cell" style="color:var(--text3)">${d.uploaded_at?d.uploaded_at.substring(0,10):'—'}</td>
+      <td onclick="event.stopPropagation()"><div class="row-actions">
+        <a class="icon-btn" href="${API}/documents/${d.id}/download" target="_blank" title="Download"><i class="ti ti-download"></i></a>
+        <div class="icon-btn" title="Re-analyse" onclick="reanalyseDoc(${d.id})"><i class="ti ti-refresh"></i></div>
+        <div class="icon-btn danger" title="Delete" onclick="deleteDoc(${d.id}, '${d.file_name.replace(/'/g,"\\'")}')"><i class="ti ti-trash"></i></div>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── Open Document Detail Page ────────────────────────────────────────────────
+let currentDocId = null;
+
+function openDocDetail(id) {
+  const doc = allDocs.find(d=>d.id===id);
+  if(!doc) return;
+  currentDocId = id;
+
+  const sd = doc.structured_data || {};
+  const acMap = {}; allAircraft.forEach(a=>acMap[a.id]=a);
+  const ac = acMap[doc.aircraft_id];
+
+  // Header
+  document.getElementById('detail-filename').textContent = doc.file_name;
+  document.getElementById('detail-download-btn').href = `${API}/documents/${id}/download`;
+
+  // Top cards
+  document.getElementById('dd-reg').textContent = ac ? ac.registration : doc.aircraft_id;
+  document.getElementById('dd-type').textContent = ac ? ac.aircraft_type : '—';
+  document.getElementById('dd-doctype').textContent = doc.document_type || 'general';
+  document.getElementById('dd-uploaded').textContent = doc.uploaded_at ? 'Uploaded ' + doc.uploaded_at.substring(0,10) : '—';
+  document.getElementById('dd-status').textContent = sd.maintenance_status || 'Not detected';
+  const srcLabel = sd._source==='claude_vision'?'Claude Vision':sd._source==='claude_ai'?'Claude AI':sd._source==='ollama'?'Ollama AI':sd._source==='llava'?'LLaVA Vision':sd._source==='regex'?'Regex':'—';
+  document.getElementById('dd-extracted-by').textContent = 'Extracted by ' + srcLabel;
+
+  // ATA chips
+  const ataEl = document.getElementById('dd-ata');
+  const ataCodes = sd.ata_codes || [];
+  ataEl.innerHTML = ataCodes.length
+    ? ataCodes.map(c=>`<span class="tag" style="cursor:pointer" title="${ATA_MAP[c]||''}">${c} · ${ATA_MAP[c]||''}</span>`).join('')
+    : '<span style="color:var(--text3);font-size:11px;font-family:var(--mono)">Not detected</span>';
+
+  // Aircraft fields
+  setField('dd-f-reg',    sd.registration   || (ac ? ac.registration : null));
+  setField('dd-f-msn',    sd.msn            || (ac ? ac.msn : null));
+  setField('dd-f-actype', sd.aircraft_type  || (ac ? ac.aircraft_type : null));
+  setField('dd-f-operator',sd.operator      || (ac ? ac.operator_name : null));
+  setField('dd-f-fh',     sd.flight_hours   ? sd.flight_hours + ' FH' : null);
+  setField('dd-f-fc',     sd.flight_cycles  ? sd.flight_cycles + ' FC' : null);
+  setField('dd-f-hso',    sd.hours_since_overhaul ? sd.hours_since_overhaul + ' hrs' : null);
+  setField('dd-f-station',sd.station);
+
+  // Document fields
+  setField('dd-f-docnum', sd.document_number);
+  setField('dd-f-wo',     sd.work_order);
+  setField('dd-f-nextdue',sd.next_due);
+  setField('dd-f-sigs',   sd.signatures_detected === true ? '✓ Yes' : sd.signatures_detected === false ? 'No' : null);
+
+  // Dates
+  const datesEl = document.getElementById('dd-f-dates');
+  const dates = sd.dates_found || [];
+  datesEl.innerHTML = dates.length
+    ? dates.map(d=>`<span class="tag" style="background:rgba(0,212,255,0.08);color:var(--accent)">${d}</span>`).join('')
+    : '<span style="color:var(--text3);font-family:var(--mono);font-size:11px">None found</span>';
+
+  // Findings
+  setField('dd-f-defect', sd.defect_description);
+  setField('dd-f-rect',   sd.rectification);
+
+  // Compliance
+  setTagList('dd-f-ads', sd.airworthiness_directives, 'badge-red');
+  setTagList('dd-f-sbs', sd.service_bulletins,        'badge-amber');
+
+  // Personnel fields
+  setField('dd-f-pilot_name',          sd.pilot_name);
+  setField('dd-f-pilot_reported_snag', sd.pilot_reported_snag);
+  setField('dd-f-engineer_name',       sd.engineer_name);
+  setField('dd-f-technician_name',     sd.technician_name);
+  setField('dd-f-authorisation_number',sd.authorisation_number);
+  setField('dd-f-qc_inspector',        sd.qc_inspector);
+  setField('dd-f-qc_id',              sd.qc_id);
+  setTagList('dd-f-personnel',         sd.personnel,               'badge-purple');
+  setTagList('dd-f-licences',          sd.licence_numbers,         'badge-blue');
+  // Parts fields
+  setTagList('dd-f-removed_part_numbers',    sd.removed_part_numbers,    'badge-red');
+  setTagList('dd-f-removed_serial_numbers',  sd.removed_serial_numbers,  'badge-red');
+  setTagList('dd-f-installed_part_numbers',  sd.installed_part_numbers,  'badge-green');
+  setTagList('dd-f-installed_serial_numbers',sd.installed_serial_numbers,'badge-green');
+  setTagList('dd-f-pns',              sd.part_numbers,            'badge-gray');
+  setTagList('dd-f-sns',              sd.serial_numbers,          'badge-gray');
+  // Maintenance action
+  setField('dd-f-maintenance_action', sd.maintenance_action);
+
+  // Extraction badge
+  const srcClass = sd._source==='claude_vision'||sd._source==='claude_ai'?'badge-green':sd._source==='ollama'||sd._source==='llava'?'badge-blue':'badge-gray';
+  document.getElementById('dd-extraction-badge').innerHTML =
+    `<span class="badge ${srcClass}">${srcLabel}</span>`;
+
+  // Extracted text
+  document.getElementById('dd-extracted-text').textContent =
+    doc.extracted_text || 'No text extracted — PDF may be scanned or image-only.';
+
+  // Switch to detail view (no nav highlight)
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-doc-detail').classList.add('active');
+  document.getElementById('breadcrumb').textContent = 'Platform / Documents / ' + doc.file_name;
+}
+
+function setField(id, val) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  if(val) { el.textContent = val; el.style.color = 'var(--text1)'; }
+  else    { el.textContent = 'Not detected'; el.style.color = 'var(--text3)'; }
+}
+
+function setTagList(id, arr, cls) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.innerHTML = arr && arr.length
+    ? arr.map(v=>`<span class="badge ${cls}">${v}</span>`).join('')
+    : `<span style="color:var(--text3);font-family:var(--mono);font-size:11px">None found</span>`;
+}
+
+async function reanalyseCurrentDoc() {
+  if(!currentDocId) return;
+  toast('Re-analysing document…','info');
+  try {
+    await apiFetch(`/documents/${currentDocId}/reanalyse`,{method:'POST'});
+    toast('Re-analysis complete — reloading','success');
+    await loadDocs();
+    openDocDetail(currentDocId);
+  } catch(e) { toast(e.message,'error'); }
+}
+
+function filterDocs(type, btn) {
+  document.querySelectorAll('#view-documents .filter-pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  renderDocs(type);
+}
+
+async function doGlobalSearch() {
+  const q = document.getElementById('globalSearch').value.trim();
+  if(!q) return;
+  try {
+    const data = await apiFetch(`/documents/search?query=${encodeURIComponent(q)}`);
+    allDocs = data;
+    switchView('documents');
+    renderDocs('');
+    toast(`${data.length} result(s) for "${q}"`,'info');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function reanalyseDoc(id) {
+  toast('Re-analysing document…','info');
+  try {
+    await apiFetch(`/documents/${id}/reanalyse`,{method:'POST'});
+    toast('Re-analysis complete','success');
+    await loadDocs();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function deleteDoc(id, name) {
+  if(!confirm(`Delete document "${name}"? This cannot be undone.`)) return;
+  try {
+    await apiFetch(`/documents/${id}`,{method:'DELETE'});
+    toast('Document deleted','success');
+    await loadDocs();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+// ─── Upload ───────────────────────────────────────────────────────────────────
+function fileSelected(input) {
+  const f = input.files[0];
+  if(f) document.getElementById('upload-file-name').textContent = `Selected: ${f.name} (${(f.size/1024/1024).toFixed(2)} MB)`;
+}
+function resetUpload() {
+  document.getElementById('fileInput').value='';
+  document.getElementById('upload-file-name').textContent='or click to browse · Max 50 MB';
+  document.getElementById('upload-progress').style.display='none';
+}
+async function uploadDocument() {
+  const file = document.getElementById('fileInput').files[0];
+  const aircraftId = document.getElementById('up-aircraft').value;
+  if(!file) { toast('Please select a file','error'); return; }
+  if(!aircraftId) { toast('Please select an aircraft','error'); return; }
+
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('aircraft_id', aircraftId);
+  fd.append('document_type', document.getElementById('up-doctype').value);
+  fd.append('chapter', document.getElementById('up-chapter').value||'unassigned');
+  fd.append('extraction_mode', document.getElementById('up-useai').value);
+
+  const btn = document.getElementById('upload-btn');
+  const prog = document.getElementById('upload-progress');
+  const fill = document.getElementById('upload-progress-fill');
+  const stat = document.getElementById('upload-status');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader"></span> Uploading…';
+  prog.style.display = 'block';
+  fill.style.width = '30%';
+  stat.textContent = 'Uploading file…';
+
+  try {
+    fill.style.width = '60%';
+    stat.textContent = 'Extracting text…';
+    const res = await apiFetch('/documents/upload',{method:'POST',body:fd});
+    fill.style.width = '100%';
+    stat.textContent = 'Done!';
+    const src = res.structured_data?._source==='claude_ai'?'Claude AI':'Regex';
+    toast(`Upload successful · Extracted by ${src} · Chapter: ${res.chapter||'unassigned'}`,'success');
+    await loadDocs();
+    resetUpload();
+  } catch(e) { toast(e.message,'error'); }
+  finally {
+    btn.disabled=false;
+    btn.innerHTML='<i class="ti ti-upload"></i> Upload &amp; Extract';
+    setTimeout(()=>prog.style.display='none',2000);
+  }
+}
+
+// ─── ATA ─────────────────────────────────────────────────────────────────────
+const ATA_MAP = {
+  '00':'General','05':'Time Limits','06':'Dimensions','07':'Lifting','08':'Leveling',
+  '09':'Towing','10':'Parking','11':'Placards','12':'Servicing','20':'Std Practices',
+  '21':'Air Conditioning','22':'Auto Flight','23':'Communications','24':'Electrical',
+  '25':'Equipment','26':'Fire Protection','27':'Flight Controls','28':'Fuel',
+  '29':'Hydraulic','30':'Ice &amp; Rain','31':'Indicating','32':'Landing Gear',
+  '33':'Lights','34':'Navigation','35':'Oxygen','36':'Pneumatic','38':'Water/Waste',
+  '49':'APU','51':'Structures','52':'Doors','53':'Fuselage','54':'Nacelles',
+  '55':'Stabilizers','56':'Windows','57':'Wings','71':'Power Plant','72':'Engine',
+  '73':'Engine Fuel','74':'Ignition','75':'Air','76':'Engine Controls','77':'Engine Indicating',
+  '78':'Exhaust','79':'Oil','80':'Starting',
+};
+function renderATA() {
+  const counts = {};
+  allDocs.forEach(d=>{
+    const sd = d.structured_data||{};
+    (sd.ata_codes||[]).forEach(c=>{ counts[c]=(counts[c]||0)+1; });
+  });
+  const grid = document.getElementById('ata-grid');
+  const codes = Object.keys(ATA_MAP);
+  grid.innerHTML = codes.map(c=>{
+    const cnt = counts[c]||0;
+    const hi = cnt>0?'border-color:rgba(0,212,255,0.25);background:rgba(0,212,255,0.04)':'';
+    return `<div class="ata-chip" style="${hi}" onclick="filterByATA('${c}')">
+      <div class="ac-code">ATA ${c}</div>
+      <div class="ac-name">${ATA_MAP[c]}</div>
+      <div class="ac-count" style="${cnt>0?'color:var(--accent)':''}">${cnt} doc${cnt!==1?'s':''}</div>
+    </div>`;
+  }).join('');
+}
+async function filterByATA(code) {
+  try {
+    const data = await apiFetch(`/documents/filter/by-ata?ata=${code}`);
+    allDocs = data;
+    switchView('documents');
+    renderDocs('');
+    toast(`Filtered: ATA ${code} — ${data.length} document(s)`,'info');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+// ─── Dashboard ────────────────────────────────────────────────────────────────
+function renderDashFleet() {
+  const data = allAircraft.slice(0,6);
+  const docCount = id => allDocs.filter(d=>d.aircraft_id===id).length;
+  document.getElementById('dash-fleet-body').innerHTML = data.length
+    ? data.map(a=>`<tr onclick="viewAircraftDocs(${a.id})">
+        <td class="mono-cell" style="color:var(--accent)">${a.registration}</td>
+        <td>${a.aircraft_type}</td>
+        <td class="mono-cell">${docCount(a.id)}</td>
+        <td>${statusBadge(a.status)}</td>
+      </tr>`).join('')
+    : '<tr class="empty-row"><td colspan="4">No aircraft yet</td></tr>';
+}
+
+async function loadStats() {
+  const s = await apiFetch('/stats/summary');
+  document.getElementById('s-aircraft').textContent  = s.total_aircraft;
+  document.getElementById('s-docs').textContent      = s.total_documents;
+  document.getElementById('s-overdue').textContent   = s.overdue_ads;
+  document.getElementById('s-ai').textContent        = s.ai_extracted_docs;
+  if(document.getElementById('ad-overdue'))  document.getElementById('ad-overdue').textContent  = s.overdue_ads;
+  if(document.getElementById('ad-soon'))     document.getElementById('ad-soon').textContent     = s.due_soon_ads;
+  if(document.getElementById('ad-compliant'))document.getElementById('ad-compliant').textContent= s.compliant_ads;
+  document.getElementById('nb-ads').textContent = s.overdue_ads||'';
+  const now = new Date();
+  document.getElementById('dash-sub').textContent = `Real-time status across ${s.total_aircraft} aircraft · ${now.toLocaleTimeString()}`;
+  return s;
+}
+
+async function loadAlerts() {
+  const r = await apiFetch('/alerts');
+  document.getElementById('alert-sub').textContent = `${r.count} item(s) requiring attention`;
+  const list = document.getElementById('alerts-list');
+  if(!r.alerts.length) { list.innerHTML='<div style="color:var(--text3);font-size:12px;font-family:var(--mono);padding:8px">No active alerts</div>'; return; }
+  list.innerHTML = r.alerts.slice(0,5).map(a=>{
+    const cls = a.severity==='critical'?'notif-crit':'notif-warn';
+    const icon = a.severity==='critical'?'ti-alert-triangle':'ti-clock';
+    return `<div class="notif ${cls}">
+      <i class="ti ${icon}"></i>
+      <div><div class="notif-title">${a.type} — ${a.aircraft}: ${a.reference}</div>
+      <div class="notif-sub">${a.description||''} · Due ${a.due_date||'—'}</div></div>
+    </div>`;
+  }).join('');
+}
+
+async function loadDashboard() {
+  await Promise.all([loadAircraft(), loadDocs()]);
+  loadStats();
+  loadAlerts();
+  renderDashFleet();
+}
+
+// ─── ADs ─────────────────────────────────────────────────────────────────────
+async function loadADs() {
+  allADs = await apiFetch('/ads');
+  renderADs('');
+}
+function renderADs(filter) {
+  const data = filter ? allADs.filter(a=>a.status===filter) : allADs;
+  const acMap = {}; allAircraft.forEach(a=>acMap[a.id]=a.registration);
+  document.getElementById('ads-body').innerHTML = data.length
+    ? data.map(a=>`<tr>
+        <td class="mono-cell" style="color:var(--text2)">${a.ad_number}</td>
+        <td class="mono-cell" style="color:var(--accent)">${acMap[a.aircraft_id]||a.aircraft_id}</td>
+        <td>${a.ata_chapter?`<span class="tag">${a.ata_chapter}</span>`:'—'}</td>
+        <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.description||'—'}</td>
+        <td class="mono-cell">${a.due_date||'—'}</td>
+        <td>${statusBadge(a.status)}</td>
+        <td><div class="row-actions">
+          <div class="icon-btn danger" onclick="deleteAD(${a.id})"><i class="ti ti-trash"></i></div>
+        </div></td>
+      </tr>`).join('')
+    : '<tr class="empty-row"><td colspan="7">No ADs found</td></tr>';
+}
+function filterADs(f, btn) {
+  document.querySelectorAll('#view-airworthiness .filter-pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  renderADs(f);
+}
+async function submitAD() {
+  const payload = {
+    aircraft_id: parseInt(document.getElementById('ad-aircraft').value),
+    ad_number: document.getElementById('ad-number').value.trim(),
+    ata_chapter: document.getElementById('ad-ata').value.trim()||null,
+    status: document.getElementById('ad-status').value,
+    due_date: document.getElementById('ad-due').value||null,
+    effective_date: document.getElementById('ad-eff').value||null,
+    description: document.getElementById('ad-desc').value.trim()||null,
+    notes: document.getElementById('ad-notes').value.trim()||null,
+  };
+  if(!payload.aircraft_id||!payload.ad_number) { toast('Fill aircraft and AD number','error'); return; }
+  try {
+    await apiFetch('/ads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    toast('AD added','success');
+    closeModal('modal-ad');
+    await loadADs();
+    loadStats();
+  } catch(e) { toast(e.message,'error'); }
+}
+async function deleteAD(id) {
+  if(!confirm('Delete this AD record?')) return;
+  try {
+    await apiFetch(`/ads/${id}`,{method:'DELETE'});
+    toast('AD deleted','success');
+    await loadADs();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+// ─── SBs ─────────────────────────────────────────────────────────────────────
+async function loadSBs() {
+  allSBs = await apiFetch('/sbs');
+  renderSBs('');
+}
+function renderSBs(filter) {
+  const data = filter ? allSBs.filter(s=>s.status===filter) : allSBs;
+  const acMap = {}; allAircraft.forEach(a=>acMap[a.id]=a.registration);
+  document.getElementById('sbs-body').innerHTML = data.length
+    ? data.map(s=>`<tr>
+        <td class="mono-cell" style="color:var(--text2)">${s.sb_number}</td>
+        <td class="mono-cell" style="color:var(--accent)">${acMap[s.aircraft_id]||s.aircraft_id}</td>
+        <td>${s.ata_chapter?`<span class="tag">${s.ata_chapter}</span>`:'—'}</td>
+        <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.description||'—'}</td>
+        <td class="mono-cell">${s.due_date||'—'}</td>
+        <td>${statusBadge(s.status)}</td>
+        <td><div class="row-actions">
+          <div class="icon-btn danger" onclick="deleteSB(${s.id})"><i class="ti ti-trash"></i></div>
+        </div></td>
+      </tr>`).join('')
+    : '<tr class="empty-row"><td colspan="7">No SBs found</td></tr>';
+}
+function filterSBs(f, btn) {
+  document.querySelectorAll('#view-sbs .filter-pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  renderSBs(f);
+}
+async function submitSB() {
+  const payload = {
+    aircraft_id: parseInt(document.getElementById('sb-aircraft').value),
+    sb_number: document.getElementById('sb-number').value.trim(),
+    ata_chapter: document.getElementById('sb-ata').value.trim()||null,
+    status: document.getElementById('sb-status').value,
+    due_date: document.getElementById('sb-due').value||null,
+    revision: document.getElementById('sb-rev').value.trim()||null,
+    description: document.getElementById('sb-desc').value.trim()||null,
+  };
+  if(!payload.aircraft_id||!payload.sb_number) { toast('Fill aircraft and SB number','error'); return; }
+  try {
+    await apiFetch('/sbs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    toast('SB added','success');
+    closeModal('modal-sb');
+    await loadSBs();
+  } catch(e) { toast(e.message,'error'); }
+}
+async function deleteSB(id) {
+  if(!confirm('Delete this SB record?')) return;
+  try {
+    await apiFetch(`/sbs/${id}`,{method:'DELETE'});
+    toast('SB deleted','success');
+    await loadSBs();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+// ─── Checks ───────────────────────────────────────────────────────────────────
+async function loadChecks() {
+  allChecks = await apiFetch('/checks');
+  renderChecks('');
+}
+function renderChecks(filter) {
+  const data = filter ? allChecks.filter(c=>c.status===filter) : allChecks;
+  const acMap = {}; allAircraft.forEach(a=>acMap[a.id]=a.registration);
+  document.getElementById('checks-body').innerHTML = data.length
+    ? data.map(c=>{
+        const pct = c.status==='on-track'?70:c.status==='due-soon'?25:10;
+        const col = c.status==='on-track'?'var(--green)':c.status==='due-soon'?'var(--amber)':'var(--red)';
+        return `<tr>
+          <td class="mono-cell" style="color:var(--accent)">${acMap[c.aircraft_id]||c.aircraft_id}</td>
+          <td><span class="badge badge-blue">${c.check_type}-Check</span></td>
+          <td class="mono-cell" style="color:var(--text3)">${c.last_completed||'—'}</td>
+          <td class="mono-cell">${c.next_due_date||'—'}</td>
+          <td class="mono-cell">${c.next_due_fh?c.next_due_fh.toLocaleString()+' FH':'—'}</td>
+          <td style="min-width:100px">
+            <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${col}"></div></div>
+          </td>
+          <td>${statusBadge(c.status)}</td>
+          <td><div class="row-actions">
+            <div class="icon-btn danger" onclick="deleteCheck(${c.id})"><i class="ti ti-trash"></i></div>
+          </div></td>
+        </tr>`;
+      }).join('')
+    : '<tr class="empty-row"><td colspan="8">No checks found</td></tr>';
+}
+function filterChecks(f, btn) {
+  document.querySelectorAll('#view-maintenance .filter-pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  renderChecks(f);
+}
+async function submitCheck() {
+  const payload = {
+    aircraft_id: parseInt(document.getElementById('chk-aircraft').value),
+    check_type: document.getElementById('chk-type').value,
+    last_completed: document.getElementById('chk-last').value||null,
+    next_due_date: document.getElementById('chk-next').value||null,
+    next_due_fh: parseFloat(document.getElementById('chk-fh').value)||null,
+    work_order: document.getElementById('chk-wo').value.trim()||null,
+    status: document.getElementById('chk-status').value,
+    notes: document.getElementById('chk-notes').value.trim()||null,
+  };
+  if(!payload.aircraft_id) { toast('Select an aircraft','error'); return; }
+  try {
+    await apiFetch('/checks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    toast('Maintenance check saved','success');
+    closeModal('modal-check');
+    await loadChecks();
+  } catch(e) { toast(e.message,'error'); }
+}
+async function deleteCheck(id) {
+  if(!confirm('Delete this check record?')) return;
+  try {
+    await apiFetch(`/checks/${id}`,{method:'DELETE'});
+    toast('Check deleted','success');
+    await loadChecks();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+// ─── Analytics ────────────────────────────────────────────────────────────────
+async function loadAnalytics() {
+  const s = await apiFetch('/stats/summary');
+
+  const statusEl = document.getElementById('analytics-status');
+  const statuses = s.status_distribution;
+  const totalStatus = Object.values(statuses).reduce((a,b)=>a+b,0)||1;
+  statusEl.innerHTML = Object.entries(statuses).map(([k,v])=>`
+    <div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span style="color:var(--text2)">${k}</span>
+        <span style="font-family:var(--mono);color:var(--text3)">${v}</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(v/totalStatus*100)}%;background:var(--accent)"></div></div>
+    </div>`).join('') || '<div style="color:var(--text3);font-family:var(--mono);font-size:12px">No data yet</div>';
+
+  const typeEl = document.getElementById('analytics-types');
+  const types = s.doc_type_distribution;
+  const totalType = Object.values(types).reduce((a,b)=>a+b,0)||1;
+  typeEl.innerHTML = Object.entries(types).map(([k,v])=>`
+    <div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span style="color:var(--text2)">${k}</span>
+        <span style="font-family:var(--mono);color:var(--text3)">${v}</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(v/totalType*100)}%;background:var(--purple)"></div></div>
+    </div>`).join('') || '<div style="color:var(--text3);font-family:var(--mono);font-size:12px">No data yet</div>';
+
+  const ataEl = document.getElementById('analytics-ata');
+  const ata = s.ata_distribution;
+  const maxATA = Math.max(...Object.values(ata),1);
+  ataEl.innerHTML = Object.entries(ata).length
+    ? Object.entries(ata).map(([k,v])=>`
+      <div class="exp-bar" style="margin-bottom:8px">
+        <span style="min-width:90px;font-family:var(--mono);font-size:11px;color:var(--accent)">ATA ${k} · ${ATA_MAP[k]||''}</span>
+        <div class="exp-fill"><div class="exp-inner" style="width:${Math.round(v/maxATA*100)}%;background:var(--accent)"></div></div>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text3);min-width:28px;text-align:right">${v}</span>
+      </div>`).join('')
+    : '<div style="color:var(--text3);font-family:var(--mono);font-size:12px">No data yet — upload PDF documents first</div>';
+}
+
+
+// ─── Document Review & Correct ───────────────────────────────────────────────
+let reviewDocId    = null;
+let currentPage    = 1;
+let totalPages     = 1;
+let hasChanges     = false;
+
+const REVIEW_FIELDS = [
+  'registration','msn','aircraft_type','operator',
+  'document_number','work_order','flight_hours','flight_cycles',
+  'station','next_due','defect_description','rectification',
+  'pilot_name','pilot_reported_snag',
+  'engineer_name','technician_name','authorisation_number',
+  'qc_inspector','qc_id','maintenance_action',
+];
+const REVIEW_ARRAYS = [
+  'ata_codes','part_numbers','serial_numbers',
+  'personnel','licence_numbers',
+  'removed_part_numbers','removed_serial_numbers',
+  'installed_part_numbers','installed_serial_numbers',
+  'airworthiness_directives','service_bulletins',
+];
+
+async function openReviewPage(docId) {
+  if (!docId) return;
+  reviewDocId = docId;
+  currentPage = 1;
+  hasChanges  = false;
+
+  const doc = allDocs.find(d => d.id === docId);
+  if (!doc) return;
+
+  document.getElementById('review-filename').textContent = doc.file_name;
+  document.getElementById('correction-badge').textContent = 'No changes yet';
+  document.getElementById('correction-badge').style.color = 'var(--text3)';
+
+  // Populate fields from existing structured_data
+  const sd = doc.structured_data || {};
+
+  // Document type select
+  const dtEl = document.getElementById('cor-doctype');
+  dtEl.value = doc.document_type || 'Other';
+
+  // Status select
+  const stEl = document.getElementById('cor-status');
+  stEl.value = sd.maintenance_status || '';
+
+  // Simple text fields
+  REVIEW_FIELDS.forEach(f => {
+    const el = document.getElementById('cor-' + f);
+    if (el) el.value = sd[f] || '';
+  });
+
+  // Array fields — join with comma
+  REVIEW_ARRAYS.forEach(f => {
+    const el = document.getElementById('cor-' + f);
+    if (!el) return;
+    const val = sd[f];
+    el.value = Array.isArray(val) ? val.join(', ') : (val || '');
+  });
+
+  // Mark changes on any input
+  document.querySelectorAll('#view-review input, #view-review select, #view-review textarea')
+    .forEach(el => {
+      el.addEventListener('input', markChanged, { once: false });
+      el.addEventListener('change', markChanged, { once: false });
+    });
+
+  // Switch to review view
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-review').classList.add('active');
+  document.getElementById('breadcrumb').textContent = 'Platform / Documents / ' + doc.file_name + ' / Review';
+
+  // Load PDF preview
+  await loadPreviewPage(1);
+}
+
+function markChanged() {
+  hasChanges = true;
+  const badge = document.getElementById('correction-badge');
+  badge.textContent = 'Unsaved changes';
+  badge.style.color = 'var(--amber)';
+}
+
+async function loadPreviewPage(page) {
+  if (!reviewDocId) return;
+  const area = document.getElementById('pdf-preview-area');
+  area.innerHTML = '<div style="color:var(--text3);font-family:var(--mono);font-size:12px;padding:40px"><span class="loader"></span><br><br>Loading page ' + page + '…</div>';
+
+  try {
+    const data = await apiFetch('/documents/' + reviewDocId + '/preview?page=' + page);
+    totalPages  = data.total_pages;
+    currentPage = data.page;
+
+    document.getElementById('page-indicator').textContent = 'Page ' + currentPage + ' / ' + totalPages;
+    document.getElementById('prev-page-btn').disabled = currentPage <= 1;
+    document.getElementById('next-page-btn').disabled = currentPage >= totalPages;
+
+    area.innerHTML = '<img src="data:' + data.mime_type + ';base64,' + data.image_b64 + '" style="max-width:100%;border-radius:var(--r);box-shadow:0 4px 20px rgba(0,0,0,0.4)" alt="Document page ' + page + '">';
+  } catch(e) {
+    area.innerHTML = '<div style="color:var(--red);font-family:var(--mono);font-size:12px;padding:40px">Preview failed: ' + e.message + '</div>';
+  }
+}
+
+async function changePage(delta) {
+  const newPage = currentPage + delta;
+  if (newPage < 1 || newPage > totalPages) return;
+  await loadPreviewPage(newPage);
+}
+
+async function saveCorrections() {
+  if (!reviewDocId) return;
+
+  const corrections = {};
+
+  // Document type (top level)
+  corrections['document_type'] = document.getElementById('cor-doctype').value;
+
+  // Status
+  const status = document.getElementById('cor-status').value;
+  if (status) corrections['maintenance_status'] = status;
+
+  // Simple text fields
+  REVIEW_FIELDS.forEach(f => {
+    const el = document.getElementById('cor-' + f);
+    if (el) corrections[f] = el.value.trim() || null;
+  });
+
+  // Array fields — split by comma
+  REVIEW_ARRAYS.forEach(f => {
+    const el = document.getElementById('cor-' + f);
+    if (!el) return;
+    const raw = el.value.trim();
+    if (raw) {
+      corrections[f] = raw.split(',').map(s => s.trim()).filter(Boolean);
+    } else {
+      corrections[f] = null;
+    }
+  });
+
+  try {
+    const resp = await fetch(API + '/documents/' + reviewDocId + '/correct', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(corrections),
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({ detail: 'Unknown error' }));
+      toast(err.detail || 'Save failed', 'error');
+      return;
+    }
+
+    toast('Corrections saved successfully', 'success');
+    hasChanges = false;
+
+    const badge = document.getElementById('correction-badge');
+    badge.textContent = '✓ Saved';
+    badge.style.color = 'var(--green)';
+
+    // Reload documents so detail page reflects changes
+    await loadDocs();
+
+    // Update the detail page if we go back
+    const updatedDoc = allDocs.find(d => d.id === reviewDocId);
+    if (updatedDoc) openDocDetail(reviewDocId);
+
+  } catch(e) {
+    toast('Save error: ' + e.message, 'error');
+  }
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+(async()=>{
+  try {
+    await loadDashboard();
+  } catch(e) {
+    toast('Cannot reach API at '+API+'. Is the backend running?','error');
+    document.getElementById('dash-sub').textContent = 'API unreachable — start the backend server';
+  }
+})();
+</script>
+</body>
+</html>

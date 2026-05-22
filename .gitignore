@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+.env
+API.txt
+postgre.txt
+files.zip
+start_all.bat
+storage/*.pdf
+storage/**/*.pdf
