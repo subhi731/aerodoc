@@ -189,6 +189,37 @@ tbody td{padding:11px 16px;font-size:12.5px;vertical-align:middle}
 /* ── DETAIL ── */
 .detail-row{display:flex;flex-direction:column;gap:2px;padding:8px 0;border-bottom:1px solid var(--border)}
 .detail-row:last-child{border-bottom:none}
+.excel-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+.excel-table th{
+    background:rgba(255,255,255,0.08);
+    border:1px solid var(--border);
+    padding:14px;
+    text-align:left;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:0.5px;
+    color:#d8e1ff;
+}
+
+
+.excel-table td{
+    border:1px solid var(--border);
+    padding:14px;
+    font-size:15px;
+    vertical-align:middle;
+}
+
+.excel-table tr:hover{
+    background:rgba(255,255,255,0.03);
+}
+.excel-table tbody tr:nth-child(even){
+    background:rgba(255,255,255,0.02);
+}
 .detail-key{font-size:10px;font-family:var(--mono);color:var(--text3);letter-spacing:0.5px}
 .detail-val{font-size:12.5px;color:var(--text1)}
 
@@ -380,78 +411,237 @@ tbody td{padding:11px 16px;font-size:12.5px;vertical-align:middle}
         <div class="two-col" style="align-items:start">
           <div style="display:flex;flex-direction:column;gap:14px">
             <div class="card" style="margin:0">
-              <div class="card-header"><div class="card-title"><i class="ti ti-plane" style="font-size:13px;margin-right:6px;color:var(--accent)"></i>Aircraft Information</div></div>
-              <div class="card-body" style="padding:0 16px">
-                <div style="display:grid;grid-template-columns:1fr 1fr">
-                  <div class="detail-row"><div class="detail-key">REGISTRATION</div><div class="detail-val" id="dd-f-reg">—</div></div>
-                  <div class="detail-row"><div class="detail-key">MSN</div><div class="detail-val" id="dd-f-msn">—</div></div>
-                  <div class="detail-row"><div class="detail-key">AIRCRAFT TYPE</div><div class="detail-val" id="dd-f-actype">—</div></div>
-                  <div class="detail-row"><div class="detail-key">OPERATOR</div><div class="detail-val" id="dd-f-operator">—</div></div>
-                  <div class="detail-row"><div class="detail-key">FLIGHT HOURS</div><div class="detail-val" id="dd-f-fh">—</div></div>
-                  <div class="detail-row"><div class="detail-key">FLIGHT CYCLES</div><div class="detail-val" id="dd-f-fc">—</div></div>
-                  <div class="detail-row"><div class="detail-key">HRS SINCE OVERHAUL</div><div class="detail-val" id="dd-f-hso">—</div></div>
-                  <div class="detail-row"><div class="detail-key">STATION</div><div class="detail-val" id="dd-f-station">—</div></div>
-                </div>
+    <div class="card-header">
+        <div class="card-title">
+            <i class="ti ti-plane" style="font-size:13px;margin-right:6px;color:var(--accent)"></i>
+            Aircraft Information
+        </div>
+    </div>
+
+    <div class="card-body">
+
+        <table class="excel-table">
+            <thead>
+                <tr>
+                    <th>Registration</th>
+                    <th>MSN</th>
+                    <th>Aircraft Type</th>
+                    <th>Operator</th>
+                    <th>Flight Hours</th>
+                    <th>Flight Cycles</th>
+                    <th>Station</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td id="dd-f-reg">—</td>
+                    <td id="dd-f-msn">—</td>
+                    <td id="dd-f-actype">—</td>
+                    <td id="dd-f-operator">—</td>
+                    <td id="dd-f-fh">—</td>
+                    <td id="dd-f-fc">—</td>
+                    <td id="dd-f-station">—</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
               </div>
             </div>
             <div class="card" style="margin:0">
               <div class="card-header"><div class="card-title"><i class="ti ti-file-description" style="font-size:13px;margin-right:6px;color:var(--accent)"></i>Document Information</div></div>
-              <div class="card-body" style="padding:0 16px">
-                <div style="display:grid;grid-template-columns:1fr 1fr">
-                  <div class="detail-row"><div class="detail-key">DOCUMENT NUMBER</div><div class="detail-val" id="dd-f-docnum">—</div></div>
-                  <div class="detail-row"><div class="detail-key">WORK ORDER</div><div class="detail-val" id="dd-f-wo">—</div></div>
-                  <div class="detail-row"><div class="detail-key">NEXT DUE</div><div class="detail-val" id="dd-f-nextdue">—</div></div>
-                  <div class="detail-row"><div class="detail-key">SIGNATURES DETECTED</div><div class="detail-val" id="dd-f-sigs">—</div></div>
-                </div>
-                <div class="detail-row"><div class="detail-key">DATES FOUND</div><div id="dd-f-dates" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px">—</div></div>
-              </div>
+              <div class="card-body">
+
+    <table class="excel-table">
+        <thead>
+            <tr>
+                <th>Document Number</th>
+                <th>Work Order</th>
+                <th>Next Due</th>
+                <th>Signatures</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td id="dd-f-docnum">—</td>
+                <td id="dd-f-wo">—</td>
+                <td id="dd-f-nextdue">—</td>
+                <td id="dd-f-sigs">—</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top:15px">
+        <strong>Dates Found:</strong>
+        <div id="dd-f-dates" style="margin-top:6px"></div>
+    </div>
+
+</div>
             </div>
             <div class="card" style="margin:0">
               <div class="card-header"><div class="card-title"><i class="ti ti-tool" style="font-size:13px;margin-right:6px;color:var(--amber)"></i>Maintenance Findings</div></div>
-              <div class="card-body" style="padding:0 16px">
-                <div class="detail-row"><div class="detail-key">DEFECT / FINDING</div><div class="detail-val" id="dd-f-defect" style="color:var(--text2);line-height:1.6;margin-top:4px;white-space:pre-wrap">—</div></div>
-                <div class="detail-row"><div class="detail-key">RECTIFICATION / ACTION TAKEN</div><div class="detail-val" id="dd-f-rect" style="color:var(--text2);line-height:1.6;margin-top:4px;white-space:pre-wrap">—</div></div>
-              </div>
+              <div class="card-body">
+
+    <table class="excel-table">
+        <thead>
+            <tr>
+                <th>Defect / Finding</th>
+                <th>Rectification / Action Taken</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td id="dd-f-defect">—</td>
+                <td id="dd-f-rect">—</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
             </div>
-            <div class="card" style="margin:0">
-              <div class="card-header"><div class="card-title"><i class="ti ti-certificate" style="font-size:13px;margin-right:6px;color:var(--green)"></i>Compliance References</div></div>
-              <div class="card-body" style="padding:0 16px">
-                <div class="detail-row"><div class="detail-key">AIRWORTHINESS DIRECTIVES</div><div id="dd-f-ads" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
-                <div class="detail-row"><div class="detail-key">SERVICE BULLETINS</div><div id="dd-f-sbs" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
-              </div>
-            </div>
+           <div class="card" style="margin:0">
+  <div class="card-header">
+    <div class="card-title">
+      <i class="ti ti-certificate" style="font-size:13px;margin-right:6px;color:var(--green)"></i>
+      Compliance References
+    </div>
+  </div>
+
+  <div class="card-body">
+
+    <table class="excel-table">
+      <thead>
+        <tr>
+          <th>Airworthiness Directives</th>
+          <th>Service Bulletins</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td id="dd-f-ads"></td>
+          <td id="dd-f-sbs"></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
             <div class="card" style="margin:0">
               <div class="card-header"><div class="card-title"><i class="ti ti-users" style="font-size:13px;margin-right:6px;color:var(--purple)"></i>Personnel</div></div>
-              <div class="card-body" style="padding:0 16px">
-                <div class="detail-row"><div class="detail-key">PILOT NAME</div><div class="detail-val" id="dd-f-pilot_name">—</div></div>
-                <div class="detail-row"><div class="detail-key">PILOT REPORTED SNAG</div><div class="detail-val" id="dd-f-pilot_reported_snag" style="color:var(--text2);line-height:1.6;margin-top:4px">—</div></div>
-                <div class="detail-row"><div class="detail-key">ENGINEER / AME NAME</div><div class="detail-val" id="dd-f-engineer_name">—</div></div>
-                <div class="detail-row"><div class="detail-key">TECHNICIAN NAME</div><div class="detail-val" id="dd-f-technician_name">—</div></div>
-                <div class="detail-row"><div class="detail-key">AUTHORISATION NUMBER</div><div class="detail-val" id="dd-f-authorisation_number">—</div></div>
-                <div class="detail-row"><div class="detail-key">QC INSPECTOR</div><div class="detail-val" id="dd-f-qc_inspector">—</div></div>
-                <div class="detail-row"><div class="detail-key">QC ID</div><div class="detail-val" id="dd-f-qc_id">—</div></div>
-                <div class="detail-row"><div class="detail-key">ALL PERSONNEL</div><div id="dd-f-personnel" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
-                <div class="detail-row"><div class="detail-key">LICENCE NUMBERS</div><div id="dd-f-licences" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
-              </div>
+              <div class="card-body">
+
+    <table class="excel-table">
+        <thead>
+            <tr>
+                <th>Pilot Name</th>
+                <th>Engineer / AME</th>
+                <th>Technician</th>
+                <th>QC Inspector</th>
+                <th>QC ID</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td id="dd-f-pilot_name">—</td>
+                <td id="dd-f-engineer_name">—</td>
+                <td id="dd-f-technician_name">—</td>
+                <td id="dd-f-qc_inspector">—</td>
+                <td id="dd-f-qc_id">—</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top:15px">
+        <strong>Pilot Reported Snag</strong>
+        <div id="dd-f-pilot_reported_snag" style="margin-top:6px"></div>
+    </div>
+
+    <div style="margin-top:15px">
+        <strong>Authorisation Number</strong>
+        <div id="dd-f-authorisation_number" style="margin-top:6px"></div>
+    </div>
+
+    <div style="margin-top:15px">
+        <strong>All Personnel</strong>
+        <div id="dd-f-personnel" style="margin-top:6px"></div>
+    </div>
+
+    <div style="margin-top:15px">
+        <strong>Licence Numbers</strong>
+        <div id="dd-f-licences" style="margin-top:6px"></div>
+    </div>
+
+</div>
             </div>
 
             <div class="card" style="margin:0">
               <div class="card-header"><div class="card-title"><i class="ti ti-components" style="font-size:13px;margin-right:6px;color:var(--accent)"></i>Parts & Components</div></div>
-              <div class="card-body" style="padding:0 16px">
-                <div class="detail-row"><div class="detail-key">REMOVED PART NUMBERS</div><div id="dd-f-removed_part_numbers" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
-                <div class="detail-row"><div class="detail-key">REMOVED SERIAL NUMBERS</div><div id="dd-f-removed_serial_numbers" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
-                <div class="detail-row"><div class="detail-key">INSTALLED PART NUMBERS</div><div id="dd-f-installed_part_numbers" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
-                <div class="detail-row"><div class="detail-key">INSTALLED SERIAL NUMBERS</div><div id="dd-f-installed_serial_numbers" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
-                <div class="detail-row"><div class="detail-key">ALL PART NUMBERS</div><div id="dd-f-pns" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
-                <div class="detail-row"><div class="detail-key">ALL SERIAL NUMBERS</div><div id="dd-f-sns" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div></div>
-              </div>
+              <div class="card-body">
+
+    <table class="excel-table">
+        <thead>
+            <tr>
+                <th>Removed Part Numbers</th>
+                <th>Removed Serial Numbers</th>
+                <th>Installed Part Numbers</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td id="dd-f-removed_part_numbers"></td>
+                <td id="dd-f-removed_serial_numbers"></td>
+                <td id="dd-f-installed_part_numbers"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="excel-table" style="margin-top:15px">
+        <thead>
+            <tr>
+                <th>Installed Serial Numbers</th>
+                <th>All Part Numbers</th>
+                <th>All Serial Numbers</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td id="dd-f-installed_serial_numbers"></td>
+                <td id="dd-f-pns"></td>
+                <td id="dd-f-sns"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
             </div>
 
             <div class="card" style="margin:0">
               <div class="card-header"><div class="card-title"><i class="ti ti-tool" style="font-size:13px;margin-right:6px;color:var(--amber)"></i>Maintenance Action</div></div>
-              <div class="card-body" style="padding:0 16px">
-                <div class="detail-row"><div class="detail-key">MAINTENANCE DONE BY ENGINEER</div><div class="detail-val" id="dd-f-maintenance_action" style="color:var(--text2);line-height:1.6;margin-top:4px">—</div></div>
-              </div>
+              <div class="card-body">
+
+    <table class="excel-table">
+        <thead>
+            <tr>
+                <th>Maintenance Done By Engineer</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td id="dd-f-maintenance_action">—</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
             </div>
           </div>
           <div class="card" style="margin:0">
@@ -460,7 +650,7 @@ tbody td{padding:11px 16px;font-size:12.5px;vertical-align:middle}
               <span id="dd-extraction-badge"></span>
             </div>
             <div class="card-body">
-              <pre id="dd-extracted-text" style="font-family:var(--mono);font-size:11px;color:var(--text2);white-space:pre-wrap;word-break:break-word;max-height:700px;overflow-y:auto;line-height:1.7;background:var(--navy3);padding:12px;border-radius:var(--r);border:1px solid var(--border)">No text extracted from this document.</pre>
+              <pre id="dd-extracted-text" style="font-family:var(--mono);font-size:13px;color:var(--text1);white-space:pre-wrap;word-break:break-word;max-height:600px;overflow-y:auto;line-height:1.8;background:#0f172a;padding:18px;border-radius:12px;border:1px solid var(--border);box-shadow:0 4px 12px rgba(0,0,0,0.25)"></pre>
             </div>
           </div>
         </div>
@@ -1109,7 +1299,13 @@ function renderFleet(filter) {
     ? data.map(a=>`
       <tr>
         <td class="mono-cell" style="color:var(--text3)">${a.msn}</td>
-        <td class="mono-cell" style="color:var(--accent)">${a.registration}</td>
+        <td class="mono-cell">
+    <a href="#" 
+       style="color:var(--accent);text-decoration:none;font-weight:600;"
+       onclick="openAircraftDetails(${a.id})">
+       ${a.registration}
+    </a>
+</td>
         <td>${a.aircraft_type}</td>
         <td>${a.operator_name}</td>
         <td class="mono-cell" style="color:var(--text3)">${a.manufacture_date||'—'}</td>
@@ -1123,6 +1319,22 @@ function renderFleet(filter) {
       </tr>`).join('')
     : '<tr class="empty-row"><td colspan="9">No aircraft found</td></tr>';
 }
+function openAircraftDetails(id){
+
+  const aircraftDocs = allDocs.filter(d => d.aircraft_id === id);
+
+  if(!aircraftDocs.length){
+    switchView('doc-detail');
+    alert('No documents found for this aircraft');
+    return;
+  }
+
+  aircraftDocs.sort((a,b)=>b.id-a.id);
+
+  openDocDetail(aircraftDocs[0].id);
+}
+
+
 
 function filterFleet(f, btn) {
   document.querySelectorAll('#view-fleet .filter-pill').forEach(p=>p.classList.remove('active'));
