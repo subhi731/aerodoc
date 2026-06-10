@@ -17,19 +17,29 @@ from fastapi import FastAPI, Depends, UploadFile, File, Form, HTTPException, Que
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from passlib.context import CryptContext
 import pdfplumber
 import httpx
 
 from app.db import Base, engine, get_db
-from app.models import Aircraft, Document, AirworthinessDirective, ServiceBulletin, MaintenanceCheck
+from app.models import (
+    Aircraft,
+    Document,
+    AirworthinessDirective,
+    ServiceBulletin,
+    MaintenanceCheck,
+    User
+)
 from app.schemas import (
     AircraftCreate, AircraftResponse,
     DocumentResponse,
     ADCreate, ADResponse,
     SBCreate, SBResponse,
     CheckCreate, CheckResponse,
+    UserSignup,
+    UserLogin,
+    UserResponse
 )
-
 # ─────────────────────────────────────────────────────────────────────────────
 # CONFIG
 # ─────────────────────────────────────────────────────────────────────────────
@@ -84,6 +94,24 @@ Base.metadata.create_all(bind=engine)
 STORAGE_ROOT = Path("storage")
 STORAGE_ROOT.mkdir(parents=True, exist_ok=True)
 
+# ─── Authentication Helpers ─────────────────────────────────────
+
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto"
+)
+
+def hash_password(password: str):
+    return pwd_context.hash(password)
+
+def verify_password(
+    plain_password: str,
+    hashed_password: str
+):
+    return pwd_context.verify(
+        plain_password,
+        hashed_password
+    )
 
 # ═════════════════════════════════════════════════════════════════════════════
 # STEP 1 — PDF TEXT EXTRACTION
@@ -1730,3 +1758,65 @@ def get_alerts(db: Session = Depends(get_db)):
                            "due_date":c.next_due_date,"description":c.notes or ""})
     alerts.sort(key=lambda x: (0 if x["severity"]=="critical" else 1, x["due_date"] or ""))
     return {"count": len(alerts), "alerts": alerts}
+
+# ─────────────────────────────────────────────────────────────
+# AUTHENTICATION
+# ─────────────────────────────────────────────────────────────
+
+@app.post("/signup", response_model=UserResponse)
+def signup(user: UserSignup, db: Session = Depends(get_db)):
+
+    existing_user = (
+        db.query(User)
+        .filter(User.email == user.email)
+        .first()
+    )
+
+    if existing_user:
+        raise HTTPException(
+            status_code=400,
+            detail="Email already registered"
+        )
+
+    new_user = User(
+        name=user.name,
+        email=user.email,
+        password_hash=hash_password(user.password)
+    )
+
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return new_user
+
+@app.post("/login")
+def login(user: UserLogin, db: Session = Depends(get_db)):
+
+    existing_user = (
+        db.query(User)
+        .filter(User.email == user.email)
+        .first()
+    )
+
+    if not existing_user:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+
+    if not verify_password(
+        user.password,
+        existing_user.password_hash
+    ):
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+
+    return {
+        "message": "Login successful",
+        "id": existing_user.id,
+        "name": existing_user.name,
+        "email": existing_user.email
+    }

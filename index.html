@@ -189,37 +189,6 @@ tbody td{padding:11px 16px;font-size:12.5px;vertical-align:middle}
 /* ── DETAIL ── */
 .detail-row{display:flex;flex-direction:column;gap:2px;padding:8px 0;border-bottom:1px solid var(--border)}
 .detail-row:last-child{border-bottom:none}
-.excel-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:10px;
-}
-
-.excel-table th{
-    background:rgba(255,255,255,0.08);
-    border:1px solid var(--border);
-    padding:14px;
-    text-align:left;
-    font-size:13px;
-    font-weight:600;
-    letter-spacing:0.5px;
-    color:#d8e1ff;
-}
-
-
-.excel-table td{
-    border:1px solid var(--border);
-    padding:14px;
-    font-size:15px;
-    vertical-align:middle;
-}
-
-.excel-table tr:hover{
-    background:rgba(255,255,255,0.03);
-}
-.excel-table tbody tr:nth-child(even){
-    background:rgba(255,255,255,0.02);
-}
 .detail-key{font-size:10px;font-family:var(--mono);color:var(--text3);letter-spacing:0.5px}
 .detail-val{font-size:12.5px;color:var(--text1)}
 
@@ -255,11 +224,147 @@ tbody td{padding:11px 16px;font-size:12.5px;vertical-align:middle}
 .bar-col:hover{background:var(--accent)}
 .bar-col.amber{background:rgba(245,158,11,.3)}
 .bar-col.red{background:rgba(239,68,68,.3)}
+
+.excel-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+
+.excel-table th{
+  background:var(--navy3);
+  color:var(--text1);
+  text-align:left;
+  padding:10px;
+  border:1px solid var(--border);
+}
+
+.excel-table td{
+  padding:10px;
+  border:1px solid var(--border);
+}
+
+.excel-table tr:hover{
+  background:rgba(255,255,255,.02);
+}
 </style>
 </head>
 <body>
+<div id="auth-screen" style="
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+background:#0a0f1e;
+">
 
-<div class="shell">
+<div style="
+width:380px;
+background:#181f38;
+padding:30px;
+border-radius:10px;
+border:1px solid rgba(255,255,255,.08);
+">
+
+<h2 style="margin-bottom:20px;text-align:center">
+AeroDoc Login
+</h2>
+
+<input
+id="login-email"
+type="email"
+placeholder="Email"
+class="form-input"
+style="margin-bottom:12px"
+/>
+
+<input
+id="login-password"
+type="password"
+placeholder="Password"
+class="form-input"
+style="margin-bottom:12px"
+/>
+
+<button
+class="btn btn-primary"
+style="width:100%"
+onclick="loginUser()"
+>
+Login
+</button>
+
+<div style="margin-top:15px;text-align:center">
+  <a href="#" onclick="showSignup()" style="color:#00d4ff;text-decoration:none">
+    Create Account
+  </a>
+</div>
+
+</div>
+</div>
+
+<div id="signup-screen" style="
+display:none;
+justify-content:center;
+align-items:center;
+height:100vh;
+background:#0a0f1e;
+">
+
+<div style="
+width:380px;
+background:#181f38;
+padding:30px;
+border-radius:10px;
+border:1px solid rgba(255,255,255,.08);
+">
+
+<h2 style="margin-bottom:20px;text-align:center">
+Create Account
+</h2>
+
+<input
+id="signup-name"
+type="text"
+placeholder="Name"
+class="form-input"
+style="margin-bottom:12px"
+/>
+
+<input
+id="signup-email"
+type="email"
+placeholder="Email"
+class="form-input"
+style="margin-bottom:12px"
+/>
+
+<input
+id="signup-password"
+type="password"
+placeholder="Password"
+class="form-input"
+style="margin-bottom:12px"
+/>
+
+<button
+class="btn btn-primary"
+style="width:100%"
+onclick="signupUser()"
+>
+Sign Up
+</button>
+
+<div style="margin-top:15px;text-align:center">
+  <a href="#" onclick="showLogin()" style="color:#00d4ff;text-decoration:none">
+    Back To Login
+  </a>
+</div>
+
+</div>
+</div>
+
+<div class="shell" id="app-shell" style="display:none">
 
   <!-- ═══════════════════════ SIDEBAR ═══════════════════════ -->
   <nav class="sidebar">
@@ -307,6 +412,9 @@ tbody td{padding:11px 16px;font-size:12.5px;vertical-align:middle}
       <div class="topbar-actions">
         <button class="btn btn-ghost" onclick="switchView('airworthiness')"><i class="ti ti-bell"></i> Alerts</button>
         <button class="btn btn-primary" onclick="switchView('upload')"><i class="ti ti-plus"></i> Upload</button>
+        <button class="btn btn-ghost" onclick="logoutUser()">
+  <i class="ti ti-logout"></i> Logout
+</button>
       </div>
     </div>
 
@@ -411,237 +519,272 @@ tbody td{padding:11px 16px;font-size:12.5px;vertical-align:middle}
         <div class="two-col" style="align-items:start">
           <div style="display:flex;flex-direction:column;gap:14px">
             <div class="card" style="margin:0">
-    <div class="card-header">
-        <div class="card-title">
-            <i class="ti ti-plane" style="font-size:13px;margin-right:6px;color:var(--accent)"></i>
-            Aircraft Information
-        </div>
-    </div>
+              <div class="card-header"><div class="card-title"><i class="ti ti-plane" style="font-size:13px;margin-right:6px;color:var(--accent)"></i>Aircraft Information</div></div>
+              
+              <div class="card-body">
+  <table class="excel-table">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Value</th>
+    </tr>
+  </thead>
 
-    <div class="card-body">
-
-        <table class="excel-table">
-            <thead>
-                <tr>
-                    <th>Registration</th>
-                    <th>MSN</th>
-                    <th>Aircraft Type</th>
-                    <th>Operator</th>
-                    <th>Flight Hours</th>
-                    <th>Flight Cycles</th>
-                    <th>Station</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td id="dd-f-reg">—</td>
-                    <td id="dd-f-msn">—</td>
-                    <td id="dd-f-actype">—</td>
-                    <td id="dd-f-operator">—</td>
-                    <td id="dd-f-fh">—</td>
-                    <td id="dd-f-fc">—</td>
-                    <td id="dd-f-station">—</td>
-                </tr>
-            </tbody>
-        </table>
-
-    </div>
+  <tbody>
+      <tr>
+        <td>Registration</td>
+        <td id="dd-f-reg">—</td>
+      </tr>
+      <tr>
+        <td>MSN</td>
+        <td id="dd-f-msn">—</td>
+      </tr>
+      <tr>
+        <td>Aircraft Type</td>
+        <td id="dd-f-actype">—</td>
+      </tr>
+      <tr>
+        <td>Operator</td>
+        <td id="dd-f-operator">—</td>
+      </tr>
+      <tr>
+        <td>Flight Hours</td>
+        <td id="dd-f-fh">—</td>
+      </tr>
+      <tr>
+        <td>Flight Cycles</td>
+        <td id="dd-f-fc">—</td>
+      </tr>
+      <tr>
+        <td>Hours Since Overhaul</td>
+        <td id="dd-f-hso">—</td>
+      </tr>
+      <tr>
+        <td>Station</td>
+        <td id="dd-f-station">—</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
-              </div>
             </div>
             <div class="card" style="margin:0">
               <div class="card-header"><div class="card-title"><i class="ti ti-file-description" style="font-size:13px;margin-right:6px;color:var(--accent)"></i>Document Information</div></div>
-              <div class="card-body">
+              <div class="card-body" style="padding:0 16px">
+                <table class="excel-table">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Value</th>
+    </tr>
+  </thead>
 
-    <table class="excel-table">
-        <thead>
-            <tr>
-                <th>Document Number</th>
-                <th>Work Order</th>
-                <th>Next Due</th>
-                <th>Signatures</th>
-            </tr>
-        </thead>
+  <tbody>
+    <tr>
+      <td>Document Number</td>
+      <td id="dd-f-docnum">—</td>
+    </tr>
 
-        <tbody>
-            <tr>
-                <td id="dd-f-docnum">—</td>
-                <td id="dd-f-wo">—</td>
-                <td id="dd-f-nextdue">—</td>
-                <td id="dd-f-sigs">—</td>
-            </tr>
-        </tbody>
-    </table>
+    <tr>
+      <td>Work Order</td>
+      <td id="dd-f-wo">—</td>
+    </tr>
 
-    <div style="margin-top:15px">
-        <strong>Dates Found:</strong>
-        <div id="dd-f-dates" style="margin-top:6px"></div>
-    </div>
+    <tr>
+      <td>Next Due</td>
+      <td id="dd-f-nextdue">—</td>
+    </tr>
 
-</div>
+    <tr>
+      <td>Signatures Detected</td>
+      <td id="dd-f-sigs">—</td>
+    </tr>
+
+    <tr>
+      <td>Dates Found</td>
+      <td id="dd-f-dates">—</td>
+    </tr>
+  </tbody>
+</table>
+              </div>
             </div>
             <div class="card" style="margin:0">
               <div class="card-header"><div class="card-title"><i class="ti ti-tool" style="font-size:13px;margin-right:6px;color:var(--amber)"></i>Maintenance Findings</div></div>
-              <div class="card-body">
+              <div class="card-body" style="padding:0 16px">
+                <table class="excel-table">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Value</th>
+    </tr>
+  </thead>
 
-    <table class="excel-table">
-        <thead>
-            <tr>
-                <th>Defect / Finding</th>
-                <th>Rectification / Action Taken</th>
-            </tr>
-        </thead>
+  <tbody>
+    <tr>
+      <td>Defect / Finding</td>
+      <td id="dd-f-defect">—</td>
+    </tr>
 
-        <tbody>
-            <tr>
-                <td id="dd-f-defect">—</td>
-                <td id="dd-f-rect">—</td>
-            </tr>
-        </tbody>
-    </table>
-
-</div>
+    <tr>
+      <td>Rectification / Action Taken</td>
+      <td id="dd-f-rect">—</td>
+    </tr>
+  </tbody>
+</table>
+              </div>
             </div>
-           <div class="card" style="margin:0">
-  <div class="card-header">
-    <div class="card-title">
-      <i class="ti ti-certificate" style="font-size:13px;margin-right:6px;color:var(--green)"></i>
-      Compliance References
-    </div>
-  </div>
+            <div class="card" style="margin:0">
+              <div class="card-header"><div class="card-title"><i class="ti ti-certificate" style="font-size:13px;margin-right:6px;color:var(--green)"></i>Compliance References</div></div>
+              <div class="card-body" style="padding:0 16px">
+                <table class="excel-table">
+  <thead>
+    <tr>
+      <th>Reference Type</th>
+      <th>Reference</th>
+    </tr>
+  </thead>
 
-  <div class="card-body">
+  <tbody>
+    <tr>
+      <td>Airworthiness Directives (AD)</td>
+      <td id="dd-f-ads">—</td>
+    </tr>
 
-    <table class="excel-table">
-      <thead>
-        <tr>
-          <th>Airworthiness Directives</th>
-          <th>Service Bulletins</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr>
-          <td id="dd-f-ads"></td>
-          <td id="dd-f-sbs"></td>
-        </tr>
-      </tbody>
-    </table>
-
-  </div>
-</div>
+    <tr>
+      <td>Service Bulletins (SB)</td>
+      <td id="dd-f-sbs">—</td>
+    </tr>
+  </tbody>
+</table>
+              </div>
+            </div>
             <div class="card" style="margin:0">
               <div class="card-header"><div class="card-title"><i class="ti ti-users" style="font-size:13px;margin-right:6px;color:var(--purple)"></i>Personnel</div></div>
-              <div class="card-body">
+              <div class="card-body" style="padding:0 16px">
+                <table class="excel-table">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Value</th>
+    </tr>
+  </thead>
 
-    <table class="excel-table">
-        <thead>
-            <tr>
-                <th>Pilot Name</th>
-                <th>Engineer / AME</th>
-                <th>Technician</th>
-                <th>QC Inspector</th>
-                <th>QC ID</th>
-            </tr>
-        </thead>
+  <tbody>
+    <tr>
+      <td>Pilot Name</td>
+      <td id="dd-f-pilot_name">—</td>
+    </tr>
 
-        <tbody>
-            <tr>
-                <td id="dd-f-pilot_name">—</td>
-                <td id="dd-f-engineer_name">—</td>
-                <td id="dd-f-technician_name">—</td>
-                <td id="dd-f-qc_inspector">—</td>
-                <td id="dd-f-qc_id">—</td>
-            </tr>
-        </tbody>
-    </table>
+    <tr>
+      <td>Pilot Reported Snag</td>
+      <td id="dd-f-pilot_reported_snag">—</td>
+    </tr>
 
-    <div style="margin-top:15px">
-        <strong>Pilot Reported Snag</strong>
-        <div id="dd-f-pilot_reported_snag" style="margin-top:6px"></div>
-    </div>
+    <tr>
+      <td>Engineer / AME Name</td>
+      <td id="dd-f-engineer_name">—</td>
+    </tr>
 
-    <div style="margin-top:15px">
-        <strong>Authorisation Number</strong>
-        <div id="dd-f-authorisation_number" style="margin-top:6px"></div>
-    </div>
+    <tr>
+      <td>Technician Name</td>
+      <td id="dd-f-technician_name">—</td>
+    </tr>
 
-    <div style="margin-top:15px">
-        <strong>All Personnel</strong>
-        <div id="dd-f-personnel" style="margin-top:6px"></div>
-    </div>
+    <tr>
+      <td>Authorisation Number</td>
+      <td id="dd-f-authorisation_number">—</td>
+    </tr>
 
-    <div style="margin-top:15px">
-        <strong>Licence Numbers</strong>
-        <div id="dd-f-licences" style="margin-top:6px"></div>
-    </div>
+    <tr>
+      <td>QC Inspector</td>
+      <td id="dd-f-qc_inspector">—</td>
+    </tr>
 
-</div>
+    <tr>
+      <td>QC ID</td>
+      <td id="dd-f-qc_id">—</td>
+    </tr>
+
+    <tr>
+      <td>All Personnel</td>
+      <td id="dd-f-personnel">—</td>
+    </tr>
+
+    <tr>
+      <td>Licence Numbers</td>
+      <td id="dd-f-licences">—</td>
+    </tr>
+
+  </tbody>
+</table>
+              </div>
             </div>
 
             <div class="card" style="margin:0">
               <div class="card-header"><div class="card-title"><i class="ti ti-components" style="font-size:13px;margin-right:6px;color:var(--accent)"></i>Parts & Components</div></div>
-              <div class="card-body">
+              <div class="card-body" style="padding:0 16px">
+                <table class="excel-table">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Value</th>
+    </tr>
+  </thead>
 
-    <table class="excel-table">
-        <thead>
-            <tr>
-                <th>Removed Part Numbers</th>
-                <th>Removed Serial Numbers</th>
-                <th>Installed Part Numbers</th>
-            </tr>
-        </thead>
+  <tbody>
+    <tr>
+      <td>Removed Part Numbers</td>
+      <td id="dd-f-removed_part_numbers">—</td>
+    </tr>
 
-        <tbody>
-            <tr>
-                <td id="dd-f-removed_part_numbers"></td>
-                <td id="dd-f-removed_serial_numbers"></td>
-                <td id="dd-f-installed_part_numbers"></td>
-            </tr>
-        </tbody>
-    </table>
+    <tr>
+      <td>Removed Serial Numbers</td>
+      <td id="dd-f-removed_serial_numbers">—</td>
+    </tr>
 
-    <table class="excel-table" style="margin-top:15px">
-        <thead>
-            <tr>
-                <th>Installed Serial Numbers</th>
-                <th>All Part Numbers</th>
-                <th>All Serial Numbers</th>
-            </tr>
-        </thead>
+    <tr>
+      <td>Installed Part Numbers</td>
+      <td id="dd-f-installed_part_numbers">—</td>
+    </tr>
 
-        <tbody>
-            <tr>
-                <td id="dd-f-installed_serial_numbers"></td>
-                <td id="dd-f-pns"></td>
-                <td id="dd-f-sns"></td>
-            </tr>
-        </tbody>
-    </table>
+    <tr>
+      <td>Installed Serial Numbers</td>
+      <td id="dd-f-installed_serial_numbers">—</td>
+    </tr>
 
-</div>
+    <tr>
+      <td>All Part Numbers</td>
+      <td id="dd-f-pns">—</td>
+    </tr>
+
+    <tr>
+      <td>All Serial Numbers</td>
+      <td id="dd-f-sns">—</td>
+    </tr>
+
+  </tbody>
+</table>
+              </div>
             </div>
 
             <div class="card" style="margin:0">
               <div class="card-header"><div class="card-title"><i class="ti ti-tool" style="font-size:13px;margin-right:6px;color:var(--amber)"></i>Maintenance Action</div></div>
-              <div class="card-body">
+              <div class="card-body" style="padding:0 16px">
+                <table class="excel-table">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Value</th>
+    </tr>
+  </thead>
 
-    <table class="excel-table">
-        <thead>
-            <tr>
-                <th>Maintenance Done By Engineer</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr>
-                <td id="dd-f-maintenance_action">—</td>
-            </tr>
-        </tbody>
-    </table>
-
-</div>
+  <tbody>
+    <tr>
+      <td>Maintenance Action</td>
+      <td id="dd-f-maintenance_action">—</td>
+    </tr>
+  </tbody>
+</table>
+              </div>
             </div>
           </div>
           <div class="card" style="margin:0">
@@ -650,7 +793,7 @@ tbody td{padding:11px 16px;font-size:12.5px;vertical-align:middle}
               <span id="dd-extraction-badge"></span>
             </div>
             <div class="card-body">
-              <pre id="dd-extracted-text" style="font-family:var(--mono);font-size:13px;color:var(--text1);white-space:pre-wrap;word-break:break-word;max-height:600px;overflow-y:auto;line-height:1.8;background:#0f172a;padding:18px;border-radius:12px;border:1px solid var(--border);box-shadow:0 4px 12px rgba(0,0,0,0.25)"></pre>
+              <pre id="dd-extracted-text" style="font-family:var(--mono);font-size:11px;color:var(--text2);white-space:pre-wrap;word-break:break-word;max-height:700px;overflow-y:auto;line-height:1.7;background:var(--navy3);padding:12px;border-radius:var(--r);border:1px solid var(--border)">No text extracted from this document.</pre>
             </div>
           </div>
         </div>
@@ -1200,7 +1343,7 @@ tbody td{padding:11px 16px;font-size:12.5px;vertical-align:middle}
 <div class="toast-area" id="toast-area"></div>
 
 <script>
-const API = 'https://resourceful-harmony-production-f819.up.railway.app';
+const API = 'http://127.0.0.1:8000';
 
 // ─── State ───────────────────────────────────────────────────────────────────
 let allAircraft = [], allDocs = [], allADs = [], allSBs = [], allChecks = [];
@@ -1300,11 +1443,11 @@ function renderFleet(filter) {
       <tr>
         <td class="mono-cell" style="color:var(--text3)">${a.msn}</td>
         <td class="mono-cell">
-    <a href="#" 
-       style="color:var(--accent);text-decoration:none;font-weight:600;"
-       onclick="openAircraftDetails(${a.id})">
-       ${a.registration}
-    </a>
+  <a href="#"
+     style="color:var(--accent);text-decoration:none;font-weight:600"
+     onclick="openAircraftDetail(${a.id}); return false;">
+     ${a.registration}
+  </a>
 </td>
         <td>${a.aircraft_type}</td>
         <td>${a.operator_name}</td>
@@ -1319,22 +1462,6 @@ function renderFleet(filter) {
       </tr>`).join('')
     : '<tr class="empty-row"><td colspan="9">No aircraft found</td></tr>';
 }
-function openAircraftDetails(id){
-
-  const aircraftDocs = allDocs.filter(d => d.aircraft_id === id);
-
-  if(!aircraftDocs.length){
-    switchView('doc-detail');
-    alert('No documents found for this aircraft');
-    return;
-  }
-
-  aircraftDocs.sort((a,b)=>b.id-a.id);
-
-  openDocDetail(aircraftDocs[0].id);
-}
-
-
 
 function filterFleet(f, btn) {
   document.querySelectorAll('#view-fleet .filter-pill').forEach(p=>p.classList.remove('active'));
@@ -1389,7 +1516,33 @@ function populateAircraftSelects() {
     if(el) el.innerHTML = '<option value="">Select aircraft…</option>' + opts;
   });
 }
+function openAircraftDetail(id) {
 
+    // Find aircraft
+    const aircraft = allAircraft.find(a => a.id === id);
+
+    if (!aircraft) {
+        alert("Aircraft not found");
+        return;
+    }
+
+    // Find documents belonging to this aircraft
+    const aircraftDocs = allDocs.filter(
+        d => d.aircraft_id === aircraft.id
+    );
+
+    // If documents exist, open first document detail
+    if (aircraftDocs.length > 0) {
+        openDocDetail(aircraftDocs[0].id);
+        return;
+    }
+
+    // No documents uploaded
+    alert(
+        aircraft.registration +
+        "\n\nNo documents uploaded for this aircraft."
+    );
+}
 // ─── Documents ────────────────────────────────────────────────────────────────
 async function loadDocs() {
   allDocs = await apiFetch('/documents');
@@ -2121,13 +2274,156 @@ async function saveCorrections() {
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
-(async()=>{
+async function loginUser() {
+
+  const email =
+    document.getElementById("login-email").value;
+
+  const password =
+    document.getElementById("login-password").value;
+
   try {
-    await loadDashboard();
-  } catch(e) {
-    toast('Cannot reach API at '+API+'. Is the backend running?','error');
-    document.getElementById('dash-sub').textContent = 'API unreachable — start the backend server';
+
+    const response = await fetch(
+      API + "/login",
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          email,
+          password
+        })
+      }
+    );
+
+    if(!response.ok){
+      alert("Invalid email or password");
+      return;
+    }
+
+    const user = await response.json();
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(user)
+    );
+
+    document.getElementById(
+      "auth-screen"
+    ).style.display = "none";
+
+    document.getElementById(
+      "app-shell"
+    ).style.display = "grid";
+
+    loadDashboard();
+
   }
+  catch(err){
+    alert("Login failed");
+  }
+}
+function logoutUser() {
+
+  localStorage.removeItem("user");
+
+  document.getElementById("app-shell").style.display = "none";
+
+  document.getElementById("auth-screen").style.display = "flex";
+
+}
+function showSignup() {
+
+  document.getElementById("auth-screen").style.display = "none";
+
+  document.getElementById("signup-screen").style.display = "flex";
+
+}
+
+function showLogin() {
+
+  document.getElementById("signup-screen").style.display = "none";
+
+  document.getElementById("auth-screen").style.display = "flex";
+
+}
+
+async function signupUser() {
+
+  const name =
+    document.getElementById("signup-name").value;
+
+  const email =
+    document.getElementById("signup-email").value;
+
+  const password =
+    document.getElementById("signup-password").value;
+
+  try {
+
+    const response = await fetch(
+      API + "/signup",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if(!response.ok){
+      alert(data.detail || "Signup failed");
+      return;
+    }
+
+    alert("Account created successfully!");
+
+    showLogin();
+
+  }
+  catch(err){
+
+    console.error(err);
+
+    alert("Signup failed");
+
+  }
+
+}
+
+(async()=>{
+
+  const user = localStorage.getItem("user");
+
+  if(user){
+
+    document.getElementById(
+      "auth-screen"
+    ).style.display = "none";
+
+    document.getElementById(
+      "app-shell"
+    ).style.display = "grid";
+
+    try {
+      await loadDashboard();
+    } catch(e) {
+      toast('Cannot reach API at '+API+'. Is the backend running?','error');
+      document.getElementById('dash-sub').textContent =
+        'API unreachable — start the backend server';
+    }
+
+  }
+
 })();
 </script>
 </body>
