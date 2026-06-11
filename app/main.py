@@ -1787,14 +1787,12 @@ def signup(user: UserSignup, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
 
-    return new_user
-
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-
-    return new_user
-
+    
+    return {
+        "id": new_user.id,
+        "name": new_user.full_name,
+        "email": new_user.email
+}
 @app.post("/login")
 def login(user: UserLogin, db: Session = Depends(get_db)):
 
