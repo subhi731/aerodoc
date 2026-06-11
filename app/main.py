@@ -1778,11 +1778,11 @@ def signup(user: UserSignup, db: Session = Depends(get_db)):
             detail="Email already registered"
         )
 
-    new_user = User(
-        name=user.name,
-        email=user.email,
-        password_hash=hash_password(user.password)
-    )
+   new_user = User(
+    full_name=user.name,
+    email=user.email,
+    password_hash=hash_password(user.password)
+)
 
     db.add(new_user)
     db.commit()
@@ -1815,8 +1815,8 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
         )
 
     return {
-        "message": "Login successful",
-        "id": existing_user.id,
-        "name": existing_user.name,
-        "email": existing_user.email
-    }
+    "message": "Login successful",
+    "id": existing_user.id,
+    "name": existing_user.full_name,
+    "email": existing_user.email
+}
