@@ -1777,12 +1777,17 @@ def signup(user: UserSignup, db: Session = Depends(get_db)):
             status_code=400,
             detail="Email already registered"
         )
+    new_user = User(
+        full_name=user.name,
+        email=user.email,
+        password_hash=hash_password(user.password)
+    )
 
-   new_user = User(
-    full_name=user.name,
-    email=user.email,
-    password_hash=hash_password(user.password)
-)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return new_user
 
     db.add(new_user)
     db.commit()
