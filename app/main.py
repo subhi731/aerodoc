@@ -97,7 +97,7 @@ STORAGE_ROOT.mkdir(parents=True, exist_ok=True)
 # ─── Authentication Helpers ─────────────────────────────────────
 
 pwd_context = CryptContext(
-    schemes=["bcrypt"],
+    schemes=["pbkdf2_sha256", "bcrypt"],
     deprecated="auto"
 )
 
