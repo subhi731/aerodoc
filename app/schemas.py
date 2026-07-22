@@ -167,7 +167,9 @@ class StatsResponse(BaseModel):
 class UserSignup(BaseModel):
     name: str
     email: str
+    phone_number: str
     password: str
+    otp: str
 
 
 class UserLogin(BaseModel):

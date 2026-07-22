@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, JSON, Date, Float, Boolean, Text
+from sqlalchemy import Column, Integer, String, ForeignKey, JSON, Date, Float, Boolean, Text, DateTime
+from datetime import datetime
 from sqlalchemy.orm import relationship
 from app.db import Base
 
@@ -103,7 +104,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    full_name = Column(String, nullable=False)
+    name = Column(String, nullable=False)
 
     email = Column(
         String,
@@ -112,7 +113,50 @@ class User(Base):
         nullable=False
     )
 
+    phone_number = Column(
+        String,
+        unique=True,
+        index=True,
+        nullable=True
+    )
+
     password_hash = Column(
         String,
         nullable=False
     )
+
+class OTP(Base):
+    __tablename__ = "otp_codes"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    email = Column(String, nullable=False, index=True)
+
+    otp = Column(String, nullable=False)
+
+    purpose = Column(String, nullable=False)
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
+class LoginActivity(Base):
+    __tablename__ = "login_activity"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    user_id = Column(Integer, nullable=False)
+
+    user_name = Column(String, nullable=False)
+
+    email = Column(String, nullable=False)
+
+    activity = Column(String, nullable=False)
+
+    ip_address = Column(String, nullable=True)
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
+    

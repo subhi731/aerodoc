@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AeroDoc — Aircraft Technical Records Platform</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
@@ -73,7 +74,8 @@ body{background:var(--navy);color:var(--text1);font-family:var(--sans);font-size
 /* ── STAT GRID ── */
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .stat-grid-3{grid-template-columns:repeat(3,1fr)}
-.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:16px;position:relative;overflow:hidden}
+.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:16px;position:relative;overflow:hidden;transition:all .25s ease;cursor:pointer}
+.stat-card:hover{transform:translateY(-4px);box-shadow:0 10px 25px rgba(0,0,0,.25);border-color:rgba(0,212,255,.35)}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
 .stat-card.cyan::before{background:var(--accent)}
 .stat-card.amber::before{background:var(--amber)}
@@ -81,7 +83,7 @@ body{background:var(--navy);color:var(--text1);font-family:var(--sans);font-size
 .stat-card.red::before{background:var(--red)}
 .stat-card.purple::before{background:var(--purple)}
 .stat-label{font-size:10px;font-family:var(--mono);color:var(--text3);letter-spacing:0.8px;margin-bottom:8px}
-.stat-value{font-size:30px;font-weight:300;letter-spacing:-1.5px;line-height:1}
+.stat-value{font-size:42px;font-weight:700;letter-spacing:-2px;line-height:1;margin-bottom:8px}
 .stat-sub{font-size:11px;color:var(--text3);margin-top:6px}
 
 /* ── CARD / TABLE ── */
@@ -111,7 +113,7 @@ tbody td{padding:11px 16px;font-size:12.5px;vertical-align:middle}
 .filter-input:focus{border-color:var(--accent)}
 
 /* ── BADGES ── */
-.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;font-size:10px;font-family:var(--mono);font-weight:500;white-space:nowrap}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;font-size:11px;font-family:var(--mono);font-weight:600;white-space:nowrap;letter-spacing:.4px}
 .badge-green{background:rgba(16,185,129,.12);color:#34d399;border:1px solid rgba(16,185,129,.2)}
 .badge-amber{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
 .badge-red{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.2)}
@@ -134,8 +136,23 @@ tbody td{padding:11px 16px;font-size:12.5px;vertical-align:middle}
 .form-group{display:flex;flex-direction:column;gap:5px}
 .form-group.full{grid-column:1/-1}
 .form-label{font-size:10px;font-family:var(--mono);color:var(--text3);letter-spacing:0.8px}
-.form-input,.form-select,.form-textarea{background:var(--navy3);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;color:var(--text1);font-size:12.5px;font-family:var(--sans);outline:none;transition:border .15s;width:100%}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
+.form-input,.form-select,.form-textarea{
+background:#111a33;
+border:1px solid rgba(255,255,255,.08);
+border-radius:10px;
+padding:10px 12px;
+color:var(--text1);
+font-size:13px;
+font-family:var(--sans);
+outline:none;
+transition:all .2s ease;
+width:100%
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+border-color:#00d4ff;
+box-shadow:0 0 0 3px rgba(0,212,255,.12);
+}
+
 .form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234a5a80' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
 .form-textarea{min-height:80px;resize:vertical}
 .form-actions{display:flex;gap:8px;margin-top:16px}
@@ -259,45 +276,182 @@ background:#0a0f1e;
 ">
 
 <div style="
-width:380px;
+width:580px;
 background:#181f38;
-padding:30px;
+padding:48px;
 border-radius:10px;
 border:1px solid rgba(255,255,255,.08);
 ">
 
-<h2 style="margin-bottom:20px;text-align:center">
-AeroDoc Login
+<div style="
+width:60px;
+height:60px;
+margin:0 auto 16px;
+border-radius:50%;
+background:rgba(0,212,255,.12);
+border:1px solid rgba(0,212,255,.25);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:26px;
+">
+✈
+</div>
+
+<h2 style="
+text-align:center;
+font-size:34px;
+font-weight:700;
+color:#ffffff;
+margin-bottom:18px;
+letter-spacing:1px;
+">
+AeroDoc
 </h2>
+
+<div style="
+text-align:center;
+margin-bottom:24px;
+">
+
+<div style="
+color:#8b9dc3;
+font-size:13px;
+font-weight:500;
+margin-bottom:6px;
+">
+Aircraft Technical Records Platform
+</div>
+
+<div style="
+color:#6f89b3;
+font-size:11px;
+letter-spacing:.5px;
+margin-bottom:16px;
+">
+FAA • EASA • DGCA Compliance Ready
+</div>
+
+<div style="
+text-align:center;
+margin-bottom:24px;
+">
+  <div style="
+  font-size:20px;
+  font-weight:600;
+  color:#f0f4ff;
+  margin-bottom:6px;
+  ">
+    Secure Access Portal
+  </div>
+
+  <div style="
+  font-size:12px;
+  color:#8b9dc3;
+  line-height:1.5;
+  ">
+    Access aircraft records, compliance data and maintenance documentation.
+  </div>
+</div>
+</div>
 
 <input
 id="login-email"
-type="email"
-placeholder="Email"
+type="text"
+placeholder="Corporate Email Address or Mobile Number"
 class="form-input"
 style="margin-bottom:12px"
+onkeydown="if(event.key==='Enter') document.getElementById('login-password').focus();"
 />
+
+<div style="
+position:relative;
+margin-bottom:12px;
+">
 
 <input
 id="login-password"
 type="password"
-placeholder="Password"
+placeholder="Enter Password"
 class="form-input"
-style="margin-bottom:12px"
+style="padding-right:45px"
 />
+
+<span
+onclick="toggleLoginPassword()"
+style="
+position:absolute;
+right:15px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+user-select:none;
+"
+>
+👁️
+</span>
+
+</div>
+
+<div style="
+text-align:center;
+margin-top:8px;
+margin-bottom:15px;
+">
+
+<a
+href="#"
+onclick="showForgotPassword()"
+style="
+color:#00d4ff;
+text-decoration:none;
+font-size:13px;
+font-weight:500;
+"
+>
+Forgot Password?
+</a>
+
+</div>
 
 <button
 class="btn btn-primary"
-style="width:100%"
+style="
+width:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+"
 onclick="loginUser()"
 >
-Login
+Access AeroDoc
 </button>
 
-<div style="margin-top:15px;text-align:center">
-  <a href="#" onclick="showSignup()" style="color:#00d4ff;text-decoration:none">
-    Create Account
-  </a>
+<div style="
+margin-top:20px;
+text-align:center;
+">
+
+<div style="
+color:#8b9dc3;
+font-size:13px;
+margin-bottom:8px;
+">
+Need an AeroDoc account?
+</div>
+
+<a
+href="#"
+onclick="showSignup()"
+style="
+color:#00d4ff;
+text-decoration:none;
+font-weight:600;
+"
+>
+Create Account →
+</a>
+
 </div>
 
 </div>
@@ -312,37 +466,181 @@ background:#0a0f1e;
 ">
 
 <div style="
-width:380px;
+width:520px;
 background:#181f38;
-padding:30px;
+padding:40px;
 border-radius:10px;
 border:1px solid rgba(255,255,255,.08);
 ">
 
-<h2 style="margin-bottom:20px;text-align:center">
-Create Account
+<h2 style="
+text-align:center;
+font-size:32px;
+font-weight:700;
+color:#ffffff;
+margin-bottom:12px;
+letter-spacing:.5px;
+">
+Create AeroDoc Account
 </h2>
 
+<div style="
+text-align:center;
+color:#8b9dc3;
+font-size:13px;
+margin-bottom:24px;
+line-height:1.6;
+">
+Register to manage aircraft technical records,
+compliance tracking and maintenance documentation.
+</div>
 <input
 id="signup-name"
 type="text"
-placeholder="Name"
+placeholder="Full Name"
 class="form-input"
 style="margin-bottom:12px"
+onkeydown="if(event.key==='Enter') document.getElementById('signup-phone').focus();"
+/>
+
+<input
+id="signup-phone"
+type="tel"
+placeholder="Mobile Number"
+class="form-input"
+style="margin-bottom:12px"
+onkeydown="if(event.key==='Enter') document.getElementById('signup-email').focus();"
 />
 
 <input
 id="signup-email"
 type="email"
-placeholder="Email"
+placeholder="Corporate Email Address"
+class="form-input"
+style="margin-bottom:12px"
+onkeydown="if(event.key==='Enter') document.getElementById('signup-password').focus();"
+/>
+
+<button
+class="btn btn-ghost"
+style="width:100%;margin-bottom:12px"
+onclick="sendSignupOtp()"
+>
+Send Verification Code
+</button>
+<input
+id="signup-password"
+type="password"
+placeholder="Create Password"
+class="form-input"
+style="margin-bottom:12px"
+onkeydown="if(event.key==='Enter') document.getElementById('signup-confirm-password').focus();"
+/>
+
+<input
+id="signup-confirm-password"
+type="password"
+placeholder="Confirm Password"
+class="form-input"
+style="margin-bottom:12px"
+onkeydown="if(event.key==='Enter') document.getElementById('signup-otp').focus();"
+/>
+
+<input
+id="signup-otp"
+type="text"
+placeholder="Verification Code"
+class="form-input"
+style="margin-bottom:12px"
+/>
+
+<button
+class="btn btn-primary"
+style="
+width:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+"
+onclick="signupUser()"
+>
+Create AeroDoc Account
+</button>
+
+<div style="margin-top:15px;text-align:center">
+  <a href="#" onclick="showLogin()" style="color:#00d4ff;text-decoration:none">
+    Back To Login
+  </a>
+</div>
+
+</div>
+</div>
+<div id="forgot-password-screen" style="
+display:none;
+justify-content:center;
+align-items:center;
+height:100vh;
+background:#0a0f1e;
+">
+
+<div style="
+width:520px;
+background:#181f38;
+padding:40px;
+border-radius:10px;
+border:1px solid rgba(255,255,255,.08);
+">
+
+<h2 style="margin-bottom:8px;text-align:center">
+Reset Password
+</h2>
+
+<div style="
+text-align:center;
+color:#8b9dc3;
+font-size:13px;
+margin-bottom:24px;
+line-height:1.6;
+">
+Recover access to your AeroDoc account.
+</div>
+
+<input
+id="reset-email"
+type="email"
+placeholder="Corporate Email Address"
+class="form-input"
+style="margin-bottom:12px"
+/>
+
+<button
+class="btn btn-ghost"
+style="width:100%;margin-bottom:12px"
+>
+Send Verification Code
+</button>
+
+<input
+id="reset-otp"
+type="text"
+placeholder="Verification Code"
 class="form-input"
 style="margin-bottom:12px"
 />
 
 <input
-id="signup-password"
+id="reset-password"
 type="password"
-placeholder="Password"
+placeholder="New Password"
+class="form-input"
+style="margin-bottom:12px"
+/>
+
+<input
+id="reset-confirm-password"
+type="password"
+placeholder="Confirm Password"
 class="form-input"
 style="margin-bottom:12px"
 />
@@ -350,15 +648,24 @@ style="margin-bottom:12px"
 <button
 class="btn btn-primary"
 style="width:100%"
-onclick="signupUser()"
 >
-Sign Up
+Reset Password
 </button>
 
-<div style="margin-top:15px;text-align:center">
-  <a href="#" onclick="showLogin()" style="color:#00d4ff;text-decoration:none">
-    Back To Login
-  </a>
+<div style="
+margin-top:20px;
+text-align:center;
+">
+<a
+href="#"
+onclick="showLogin()"
+style="
+color:#00d4ff;
+text-decoration:none;
+"
+>
+Back to Login
+</a>
 </div>
 
 </div>
@@ -388,7 +695,13 @@ Sign Up
       <div class="nav-item" data-view="sbs"><i class="ti ti-file-check"></i> Service Bulletins</div>
       <div class="nav-item" data-view="maintenance"><i class="ti ti-tool"></i> Maintenance</div>
       <div class="nav-section">Analytics</div>
-      <div class="nav-item" data-view="analytics"><i class="ti ti-chart-bar"></i> Reports</div>
+
+      <div class="nav-item" data-view="login-activity">
+        <i class="ti ti-history"></i> Login Activity
+      </div>
+      <div class="nav-item" data-view="analytics">
+        <i class="ti ti-chart-bar"></i> Reports
+      </div>
     </div>
     <div class="sidebar-footer">
       <div class="user-pill">
@@ -417,24 +730,113 @@ Sign Up
 </button>
       </div>
     </div>
-
     <div class="content" id="content-area">
 
       <!-- ══════════ DASHBOARD ══════════ -->
       <div class="view active" id="view-dashboard">
-        <div class="page-title">Fleet Overview</div>
-        <div class="page-sub" id="dash-sub">Loading…</div>
+        <div class="page-title">Fleet Operations Dashboard</div>
+<div class="page-sub" id="dash-sub">Real-time compliance, maintenance and technical records monitoring</div>
 
         <div class="stat-grid">
-          <div class="stat-card cyan"><div class="stat-label">TOTAL AIRCRAFT</div><div class="stat-value" id="s-aircraft">—</div><div class="stat-sub">Registered in fleet</div></div>
-          <div class="stat-card amber"><div class="stat-label">DOCUMENTS</div><div class="stat-value" id="s-docs">—</div><div class="stat-sub">Total records</div></div>
-          <div class="stat-card red"><div class="stat-label">OVERDUE ADs</div><div class="stat-value" id="s-overdue" style="color:var(--red)">—</div><div class="stat-sub">Immediate action required</div></div>
-          <div class="stat-card green"><div class="stat-label">AI EXTRACTED</div><div class="stat-value" id="s-ai">—</div><div class="stat-sub">Auto-processed documents</div></div>
+         <div class="stat-card cyan">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div class="stat-label">TOTAL AIRCRAFT</div>
+      <div class="stat-value" id="s-aircraft">—</div>
+      <div class="stat-sub">Active registered aircraft</div>
+    </div>
+    <i class="ti ti-plane" style="font-size:32px;color:var(--accent);opacity:.8"></i>
+  </div>
+</div>
+          <div class="stat-card amber">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div class="stat-label">TECHNICAL RECORDS</div>
+      <div class="stat-value" id="s-docs">—</div>
+      <div class="stat-sub">Digitized technical records</div>
+    </div>
+    <i class="ti ti-files" style="font-size:32px;color:var(--amber);opacity:.8"></i>
+  </div>
+</div>
+         <div class="stat-card red">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div class="stat-label">COMPLIANCE ALERTS</div>
+      <div class="stat-value" id="s-overdue" style="color:var(--red)">—</div>
+      <div class="stat-sub">Pending compliance actions</div>
+    </div>
+    <i class="ti ti-alert-triangle" style="font-size:32px;color:var(--red);opacity:.8"></i>
+  </div>
+</div>
+         <div class="stat-card green">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div class="stat-label">AI PROCESSED</div>
+      <div class="stat-value" id="s-ai">—</div>
+      <div class="stat-sub">Documents analyzed by AI</div>
+    </div>
+    <i class="ti ti-brain" style="font-size:32px;color:var(--green);opacity:.8"></i>
+  </div>
+</div>
         </div>
+
+        <div class="card" style="margin-bottom:20px">
+  <div class="card-header">
+
+    <div>
+        <div class="card-title">Recent Activity</div>
+        <div class="card-sub">
+            Latest actions across the fleet
+        </div>
+    </div>
+
+    <div style="
+        display:flex;
+        align-items:center;
+        gap:10px;
+    ">
+
+  <button
+    id="view-all-activity"
+    class="btn btn-ghost"
+    style="
+        padding:6px 12px;
+        font-size:12px;
+    "
+    onclick="openActivityModal()"
+  >
+    View All 
+  </button>
+
+        <button
+            id="delete-all-activity"
+            class="btn btn-ghost"
+            style="
+                padding:6px 12px;
+                font-size:12px;
+            "
+            onclick="removeAllActivities()"
+        >
+            <i class="ti ti-trash"></i>
+            Delete All
+        </button>
+
+    </div>
+
+</div>
+
+  <div class="card-body" id="recent-activity-list">
+
+    <div style="color:var(--text3)">
+      No recent activity available
+    </div>
+
+  </div>
+</div>
 
         <div class="two-col">
           <div class="card" style="margin:0">
-            <div class="card-header"><div><div class="card-title">Critical Alerts</div><div class="card-sub" id="alert-sub">Loading…</div></div></div>
+            <div class="card-header"><div><div class="card-title">Compliance & Safety Status</div><div class="card-sub" id="alert-sub">Loading…</div></div></div>
             <div class="card-body" id="alerts-list"><div style="color:var(--text3);font-size:12px;font-family:var(--mono)">Loading alerts…</div></div>
           </div>
           <div class="card" style="margin:0">
@@ -443,29 +845,54 @@ Sign Up
             </div>
             <div style="overflow:auto">
               <table>
-                <thead><tr><th>REG</th><th>TYPE</th><th>DOCS</th><th>STATUS</th></tr></thead>
+                <thead>
+<tr>
+  <th>REGISTRATION</th>
+  <th>AIRCRAFT TYPE</th>
+  <th>DOCUMENTS</th>
+  <th>STATUS</th>
+</tr>
+</thead>
                 <tbody id="dash-fleet-body"><tr class="empty-row"><td colspan="4">Loading…</td></tr></tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
-
+  
       <!-- ══════════ FLEET ══════════ -->
       <div class="view" id="view-fleet">
         <div class="page-title">Fleet Registry</div>
         <div class="page-sub">All registered aircraft · DGCA regulatory framework</div>
         <div class="card">
-          <div class="card-header">
-            <div class="filter-bar">
-              <button class="filter-pill active" onclick="filterFleet('all',this)">All</button>
-              <button class="filter-pill" onclick="filterFleet('active',this)">Active</button>
-              <button class="filter-pill" onclick="filterFleet('grounded',this)">Grounded</button>
-              <button class="filter-pill" onclick="filterFleet('aog',this)">AOG</button>
-            </div>
-            <button class="btn btn-primary btn-sm" onclick="openModal('modal-aircraft')"><i class="ti ti-plus"></i> Add Aircraft</button>
-          </div>
-          <div style="overflow:auto">
+
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;flex-wrap:nowrap">
+
+<div class="filter-bar">
+    <button class="filter-pill active" onclick="filterFleet('all',this)">All</button>
+    <button class="filter-pill" onclick="filterFleet('active',this)">Active</button>
+    <button class="filter-pill" onclick="filterFleet('grounded',this)">Grounded</button>
+    <button class="filter-pill" onclick="filterFleet('aog',this)">AOG</button>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+
+  <input
+    id="fleet-search"
+    class="form-input"
+    style="width:260px"
+    placeholder="Search aircraft..."
+    oninput="searchFleet(this.value)"
+  >
+
+  <button class="btn btn-primary btn-sm"
+          onclick="openModal('modal-aircraft')">
+    <i class="ti ti-plus"></i> Add Aircraft
+  </button>
+
+</div>  
+</div>    
+            <div style="overflow:auto">
             <table>
               <thead><tr><th>MSN</th><th>REGISTRATION</th><th>TYPE</th><th>OPERATOR</th><th>MFR DATE</th><th>TOTAL FH</th><th>TOTAL FC</th><th>STATUS</th><th></th></tr></thead>
               <tbody id="fleet-body"><tr class="empty-row"><td colspan="9">Loading…</td></tr></tbody>
@@ -476,8 +903,24 @@ Sign Up
 
       <!-- ══════════ DOCUMENTS ══════════ -->
       <div class="view" id="view-documents">
-        <div class="page-title">Document Library</div>
-        <div class="page-sub">Full-text search · AI-extracted metadata · ATA chapter tagging</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+
+    <button class="btn btn-ghost btn-sm"
+            onclick="backToAircraftProfile()">
+        <i class="ti ti-arrow-left"></i>
+        Back
+    </button>
+
+    <div class="page-title" style="margin:0">
+        Document Library
+    </div>
+
+</div>
+
+<div class="page-sub">
+    Full-text search · AI-extracted metadata · ATA chapter tagging
+</div>
+
         <div class="card">
           <div class="card-header" style="flex-wrap:wrap;gap:10px">
             <div class="filter-bar">
@@ -502,7 +945,7 @@ Sign Up
       <!-- ══════════ DOCUMENT DETAIL ══════════ -->
       <div class="view" id="view-doc-detail">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
-          <button class="btn btn-ghost btn-sm" onclick="switchView('documents')"><i class="ti ti-arrow-left"></i> Back</button>
+          <button class="btn btn-ghost btn-sm" onclick="goBackFromDocument()"><i class="ti ti-arrow-left"></i> Back</button>
           <div class="page-title" id="detail-filename" style="margin:0;font-size:16px">Document Detail</div>
           <div style="margin-left:auto;display:flex;gap:8px">
             <button class="btn btn-ghost btn-sm" id="detail-reanalyse-btn" onclick="reanalyseCurrentDoc()"><i class="ti ti-refresh"></i> Re-analyse</button>
@@ -1139,8 +1582,51 @@ Sign Up
 
       <!-- ══════════ AIRWORTHINESS ══════════ -->
       <div class="view" id="view-airworthiness">
-        <div class="page-title">Airworthiness Directives</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+
+    <button class="btn btn-ghost btn-sm"
+            onclick="backToAircraftProfile()">
+        <i class="ti ti-arrow-left"></i>
+        Back
+    </button>
+
+    <div class="page-title" style="margin:0">
+        Airworthiness Directives
+    </div>
+
+</div>
         <div class="page-sub">Track AD compliance per aircraft · Auto-flagged from uploaded documents</div>
+        <div id="aircraft-context-nav-ad"
+     style="margin-bottom:16px;padding:12px;border:1px solid var(--border);border-radius:10px;display:none">
+
+  <div id="current-aircraft-name-ad"
+       style="font-weight:600;margin-bottom:10px;color:var(--accent)">
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+
+    <button class="btn btn-ghost btn-sm"
+            onclick="viewAircraftDocs(selectedAircraftId)">
+      Documents
+    </button>
+
+    <button class="btn btn-primary btn-sm">
+      ADs
+    </button>
+
+    <button class="btn btn-ghost btn-sm"
+            onclick="viewAircraftSBs(selectedAircraftId)">
+      SBs
+    </button>
+
+    <button class="btn btn-ghost btn-sm"
+            onclick="viewAircraftChecks(selectedAircraftId)">
+      Maintenance
+    </button>
+
+  </div>
+
+</div>
         <div class="stat-grid stat-grid-3">
           <div class="stat-card red"><div class="stat-label">OVERDUE</div><div class="stat-value" id="ad-overdue" style="color:var(--red)">—</div><div class="stat-sub">Immediate action</div></div>
           <div class="stat-card amber"><div class="stat-label">DUE WITHIN 30 DAYS</div><div class="stat-value" id="ad-soon" style="color:var(--amber)">—</div><div class="stat-sub">Schedule now</div></div>
@@ -1167,8 +1653,51 @@ Sign Up
 
       <!-- ══════════ SERVICE BULLETINS ══════════ -->
       <div class="view" id="view-sbs">
-        <div class="page-title">Service Bulletins</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+
+    <button class="btn btn-ghost btn-sm"
+            onclick="backToAircraftProfile()">
+        <i class="ti ti-arrow-left"></i>
+        Back
+    </button>
+
+    <div class="page-title" style="margin:0">
+        Service Bulletins
+    </div>
+
+</div>
         <div class="page-sub">Track SB compliance per aircraft</div>
+        <div id="aircraft-context-nav-sb"
+     style="margin-bottom:16px;padding:12px;border:1px solid var(--border);border-radius:10px;display:none">
+
+  <div id="current-aircraft-name-sb"
+       style="font-weight:600;margin-bottom:10px;color:var(--accent)">
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+
+    <button class="btn btn-ghost btn-sm"
+            onclick="viewAircraftDocs(selectedAircraftId)">
+      Documents
+    </button>
+
+    <button class="btn btn-ghost btn-sm"
+            onclick="viewAircraftADs(selectedAircraftId)">
+      ADs
+    </button>
+
+    <button class="btn btn-primary btn-sm">
+      SBs
+    </button>
+
+    <button class="btn btn-ghost btn-sm"
+            onclick="viewAircraftChecks(selectedAircraftId)">
+      Maintenance
+    </button>
+
+  </div>
+
+</div>
         <div class="card">
           <div class="card-header">
             <div class="filter-bar">
@@ -1190,8 +1719,51 @@ Sign Up
 
       <!-- ══════════ MAINTENANCE ══════════ -->
       <div class="view" id="view-maintenance">
-        <div class="page-title">Maintenance Checks</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+
+    <button class="btn btn-ghost btn-sm"
+            onclick="backToAircraftProfile()">
+        <i class="ti ti-arrow-left"></i>
+        Back
+    </button>
+
+    <div class="page-title" style="margin:0">
+        Maintenance
+    </div>
+
+</div>
         <div class="page-sub">A / B / C / D check scheduling and status</div>
+        <div id="aircraft-context-nav-maint"
+     style="margin-bottom:16px;padding:12px;border:1px solid var(--border);border-radius:10px;display:none">
+
+  <div id="current-aircraft-name-maint"
+       style="font-weight:600;margin-bottom:10px;color:var(--accent)">
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+
+    <button class="btn btn-ghost btn-sm"
+            onclick="viewAircraftDocs(selectedAircraftId)">
+      Documents
+    </button>
+
+    <button class="btn btn-ghost btn-sm"
+            onclick="viewAircraftADs(selectedAircraftId)">
+      ADs
+    </button>
+
+    <button class="btn btn-ghost btn-sm"
+            onclick="viewAircraftSBs(selectedAircraftId)">
+      SBs
+    </button>
+
+    <button class="btn btn-primary btn-sm">
+      Maintenance
+    </button>
+
+  </div>
+
+</div>
         <div class="card">
           <div class="card-header">
             <div class="filter-bar">
@@ -1210,7 +1782,100 @@ Sign Up
           </div>
         </div>
       </div>
+<!-- ══════════ LOGIN ACTIVITY ══════════ -->
+<div class="view" id="view-login-activity">
 
+    <div class="page-title">
+        Login Activity
+    </div>
+
+    <div class="page-sub">
+        View all user login and logout history.
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card">
+         <div class="stat-label">Total Logins</div>
+         <div class="stat-value" id="total-logins">0</div>
+      </div>
+
+     <div class="stat-card">
+         <div class="stat-label">Total Logouts</div>
+         <div class="stat-value" id="total-logouts">0</div>
+     </div>
+
+     <div class="stat-card">
+         <div class="stat-label">Total Activities</div>
+         <div class="stat-value" id="total-activities">0</div>
+     </div>
+
+     <div class="stat-card">
+         <div class="stat-label">Last Login</div>
+         <div class="stat-value" id="last-login">--</div>
+     </div>
+
+    </div>
+     
+
+    <div class="card">
+
+
+    <div class="card-header">
+
+        <div class="card-title">
+            Login Activity History
+        </div>
+
+        <input
+            id="login-search"
+            type="text"
+            placeholder="🔍 Search login history..."
+            onkeyup="loadLoginActivity()"
+            style="
+                width:280px;
+                padding:10px 14px;
+                border:1px solid var(--border);
+                border-radius:8px;
+                background:var(--navy2);
+                color:var(--text1);
+                outline:none;
+            "
+        >
+
+    </div>
+
+    <div class="card-body">
+
+    <div style="overflow:auto">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>DATE</th>
+                    <th>TIME</th>
+                    <th>USER</th>
+                    <th>EMAIL</th>
+                    <th>ACTIVITY</th>
+                    <th>IP ADDRESS</th>
+                </tr>
+            </thead>
+
+            <tbody id="login-activity-body">
+
+                <tr class="empty-row">
+                    <td colspan="6">
+                        Loading...
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+      </div>
+    
+    </div>
+  </div>
+</div>
       <!-- ══════════ ANALYTICS ══════════ -->
       <div class="view" id="view-analytics">
         <div class="page-title">Analytics &amp; Reports</div>
@@ -1236,6 +1901,111 @@ Sign Up
 </div><!-- /shell -->
 
 <!-- ════════════════════ MODALS ════════════════════ -->
+<!-- Activity History Modal -->
+<div
+    id="activity-modal"
+    style="
+        display:none;
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,.55);
+        z-index:9999;
+        align-items:center;
+        justify-content:center;
+    "
+>
+
+    <div
+        style="
+            width:850px;
+            max-width:92%;
+            max-height:80vh;
+            background:var(--navy2);
+            border:1px solid var(--border);
+            border-radius:12px;
+            overflow:hidden;
+            display:flex;
+            flex-direction:column;
+        "
+    >
+
+        <div
+            style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                padding:16px 20px;
+                border-bottom:1px solid var(--border);
+            "
+        >
+
+            <div>
+                <div style="font-size:18px;font-weight:600;">
+                    Activity History
+                </div>
+
+                <div style="font-size:12px;color:var(--text3);">
+                    Complete activity timeline
+                </div>
+
+                <div
+                  id="activity-count"
+                  style="
+                      margin-top:6px;
+                      font-size:12px;
+                      color:var(--accent);
+                      font-weight:500;
+                  "
+           >   
+                  Showing 0 activities
+              </div>
+            </div>
+
+            <button
+                class="btn btn-ghost"
+                onclick="closeActivityModal()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+        <div
+    id="activity-modal-body"
+    style="
+        padding:18px;
+        overflow:auto;
+        flex:1;
+    "
+>
+
+    <input
+        id="activity-search"
+        type="text"
+        placeholder="🔍 Search activities..."
+        style="
+            width:100%;
+            margin-bottom:16px;
+            padding:10px 14px;
+            border:1px solid var(--border);
+            border-radius:8px;
+            background:var(--navy);
+            color:var(--text1);
+            outline:none;
+        "
+    >
+
+    <div id="activity-list">
+
+        Loading...
+
+    </div>
+
+</div>
+
+    </div>
+
+</div>
 
 <!-- Add Aircraft -->
 <div class="modal-backdrop" id="modal-aircraft">
@@ -1339,16 +2109,42 @@ Sign Up
   </div>
 </div>
 
+<!-- Aircraft Detail Modal -->
+<div class="modal-backdrop" id="modal-aircraft-detail">
+  <div class="modal" style="max-width:1200px">
+    
+    <div class="modal-header">
+      <div class="modal-title">Aircraft Profile</div>
+      <button class="icon-btn" onclick="closeModal('modal-aircraft-detail')">
+        <i class="ti ti-x"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div id="aircraft-detail-content">
+        Loading aircraft information...
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- Toast area -->
 <div class="toast-area" id="toast-area"></div>
 
 <script>
-const API = '';
+const API = 'http://127.0.0.1:8000';
 
 // ─── State ───────────────────────────────────────────────────────────────────
 let allAircraft = [], allDocs = [], allADs = [], allSBs = [], allChecks = [];
+let fleetSearchTerm = '';
+let currentFleetFilter = 'all';
 let currentView = 'dashboard';
-
+let editingAircraftId = null;
+let selectedAircraftAD = null;
+let selectedAircraftCheck = null;
+let selectedAircraftSB = null;
+let selectedAircraftId = null;
 // ─── Routing ─────────────────────────────────────────────────────────────────
 const breadcrumbs = {
   dashboard:'Platform / Dashboard', fleet:'Platform / Fleet Registry',
@@ -1374,6 +2170,7 @@ function switchView(id) {
   if(id==='airworthiness') { loadADs(); loadStats(); }
   if(id==='sbs') loadSBs();
   if(id==='maintenance') loadChecks();
+  if(id==='login-activity') loadLoginActivity();
   if(id==='analytics') loadAnalytics();
 }
 document.querySelectorAll('.nav-item[data-view]').forEach(n=>{
@@ -1420,11 +2217,122 @@ function statusBadge(s) {
     completed:'badge-green',
   };
   const cls = map[s]||map[s?.toLowerCase()]||'badge-gray';
-  return `<span class="badge ${cls}"><span class="dot"></span> ${s||'—'}</span>`;
+ return `<span class="badge ${cls}"><span class="dot"></span> ${(s||'—').toUpperCase()}</span>`;
 }
 function formatDate(d) {
   if(!d) return '—';
   return d.split('T')[0];
+}
+
+function getAircraftAirworthiness(aircraft) {
+
+    const aircraftADs = allADs.filter(
+        ad => ad.aircraft_id === aircraft.id
+    );
+
+    const aircraftChecks = allChecks.filter(
+        c => c.aircraft_id === aircraft.id
+    );
+
+    if (aircraft.status === 'aog') {
+        return 'NOT AIRWORTHY';
+    }
+
+    const overdueAD = aircraftADs.some(
+        ad => getADStatus(ad) === 'overdue'
+    );
+
+    if (overdueAD) {
+        return 'NOT AIRWORTHY';
+    }
+
+    const overdueCheck = aircraftChecks.some(
+        c => c.status === 'overdue'
+    );
+
+    if (overdueCheck) {
+        return 'NOT AIRWORTHY';
+    }
+
+    return 'AIRWORTHY';
+}
+
+function getAircraftAirworthinessReason(aircraft) {
+
+    if (aircraft.status === 'aog') {
+        return 'AOG Status';
+    }
+
+    const aircraftADs = allADs.filter(
+        ad => ad.aircraft_id === aircraft.id
+    );
+
+    const overdueAD = aircraftADs.some(
+        ad => getADStatus(ad) === 'overdue'
+    );
+
+    if (overdueAD) {
+        return 'Overdue AD';
+    }
+
+    const aircraftChecks = allChecks.filter(
+        c => c.aircraft_id === aircraft.id
+    );
+
+    const overdueCheck = aircraftChecks.some(
+        c => c.status === 'overdue'
+    );
+
+    if (overdueCheck) {
+        return 'Overdue Maintenance Check';
+    }
+
+    return 'No Compliance Restrictions';
+}
+
+function getADStatus(ad) {
+
+    if (!ad) return "unknown";
+
+    if (ad.status) {
+        return ad.status.toLowerCase();
+    }
+
+    return "unknown";
+
+}
+
+function getAircraftComplianceSummary(aircraft) {
+
+    const aircraftADs = allADs.filter(
+        ad => ad.aircraft_id === aircraft.id
+    );
+
+    const aircraftSBs = allSBs.filter(
+        sb => sb.aircraft_id === aircraft.id
+    );
+
+    const aircraftChecks = allChecks.filter(
+        c => c.aircraft_id === aircraft.id
+    );
+
+    const overdueADs = aircraftADs.filter(
+        ad => getADStatus(ad) === 'overdue'
+    ).length;
+
+    const openSBs = aircraftSBs.filter(
+        sb => sb.status !== 'completed'
+    ).length;
+
+    const dueChecks = aircraftChecks.filter(
+        c => c.status === 'due-soon' || c.status === 'overdue'
+    ).length;
+
+    return {
+        overdueADs,
+        openSBs,
+        dueChecks
+    };
 }
 
 // ─── Aircraft ─────────────────────────────────────────────────────────────────
@@ -1436,7 +2344,18 @@ async function loadAircraft() {
 }
 
 function renderFleet(filter) {
-  const data = filter==='all' ? allAircraft : allAircraft.filter(a=>a.status===filter);
+  let data = filter === 'all'
+    ? allAircraft
+    : allAircraft.filter(a => a.status === filter);
+
+if (fleetSearchTerm) {
+    data = data.filter(a =>
+        (a.registration || '').toLowerCase().includes(fleetSearchTerm) ||
+        (a.msn || '').toLowerCase().includes(fleetSearchTerm) ||
+        (a.aircraft_type || '').toLowerCase().includes(fleetSearchTerm) ||
+        (a.operator_name || '').toLowerCase().includes(fleetSearchTerm)
+    );
+}
   const docCount = id => allDocs.filter(d=>d.aircraft_id===id).length;
   document.getElementById('fleet-body').innerHTML = data.length
     ? data.map(a=>`
@@ -1456,9 +2375,26 @@ function renderFleet(filter) {
         <td class="mono-cell">${a.total_fc?.toLocaleString()||'—'}</td>
         <td>${statusBadge(a.status)}</td>
         <td><div class="row-actions">
-          <div class="icon-btn" title="View documents" onclick="viewAircraftDocs(${a.id})"><i class="ti ti-files"></i></div>
-          <div class="icon-btn danger" title="Delete" onclick="deleteAircraft(${a.id}, '${a.registration}')"><i class="ti ti-trash"></i></div>
-        </div></td>
+
+  <div class="icon-btn"
+       title="Edit Aircraft"
+       onclick="editAircraft(${a.id})">
+    <i class="ti ti-edit"></i>
+  </div>
+
+  <div class="icon-btn"
+       title="View documents"
+       onclick="viewAircraftDocs(${a.id})">
+    <i class="ti ti-files"></i>
+  </div>
+
+  <div class="icon-btn danger"
+       title="Delete"
+       onclick="deleteAircraft(${a.id}, '${a.registration}')">
+    <i class="ti ti-trash"></i>
+  </div>
+
+</div></td>
       </tr>`).join('')
     : '<tr class="empty-row"><td colspan="9">No aircraft found</td></tr>';
 }
@@ -1470,8 +2406,101 @@ function filterFleet(f, btn) {
 }
 
 function viewAircraftDocs(id) {
+
+  selectedAircraftId = id;
+
+  previousView = "aircraft-profile";
+
   switchView('documents');
-  renderDocs('', id);
+
+  renderDocs('', selectedAircraftId);
+
+}
+
+function searchFleet(term) {
+    fleetSearchTerm = term.toLowerCase().trim();
+    renderFleet('all');
+}
+
+function viewAircraftADs(id) {
+
+    selectedAircraftId = id;
+
+    previousView = "aircraft-profile";
+
+    switchView('airworthiness');
+
+    renderADs(selectedAircraftId);
+
+}
+
+function viewAircraftSBs(id) {
+
+    selectedAircraftId = id;
+
+    previousView = "aircraft-profile";
+
+    selectedAircraftSB = id;
+
+    closeModal('modal-aircraft-detail');
+
+    switchView('sbs');
+
+    renderSBs();
+
+    toast('Showing Service Bulletins for selected aircraft');
+}
+
+function viewAircraftChecks(id) {
+
+    selectedAircraftId = id;
+
+    previousView = "aircraft-profile";
+
+    selectedAircraftCheck = id;
+
+    closeModal('modal-aircraft-detail');
+
+    switchView('maintenance');
+
+    renderChecks();
+
+    toast('Showing Maintenance records for selected aircraft');
+}
+
+function exitAircraftContext() {
+
+    selectedAircraftId = null;
+    selectedAircraftAD = null;
+    selectedAircraftSB = null;
+    selectedAircraftCheck = null;
+
+    switchView('fleet');
+
+}
+
+function editAircraft(id) {
+
+  const aircraft = allAircraft.find(a => a.id === id);
+
+  if (!aircraft) {
+    toast('Aircraft not found', 'error');
+    return;
+  }
+
+  editingAircraftId = id;
+
+  document.getElementById('ac-reg').value = aircraft.registration || '';
+  document.getElementById('ac-msn').value = aircraft.msn || '';
+  document.getElementById('ac-type').value = aircraft.aircraft_type || '';
+  document.getElementById('ac-operator').value = aircraft.operator_name || '';
+  document.getElementById('ac-mfr').value = aircraft.manufacturer || '';
+  document.getElementById('ac-mfrdate').value = aircraft.manufacture_date || '';
+  document.getElementById('ac-fh').value = aircraft.total_fh || 0;
+  document.getElementById('ac-fc').value = aircraft.total_fc || 0;
+  document.getElementById('ac-status').value = aircraft.status || 'active';
+
+  openModal('modal-aircraft');
 }
 
 async function submitAircraft() {
@@ -1490,12 +2519,39 @@ async function submitAircraft() {
     toast('Fill in all required fields','error'); return;
   }
   try {
-    await apiFetch('/aircraft',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+
+  if (editingAircraftId) {
+
+    await apiFetch(`/aircraft/${editingAircraftId}`, {
+      method:'PUT',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+
+    toast(`Aircraft ${payload.registration} updated`,'success');
+
+  } else {
+
+    await apiFetch('/aircraft',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+
     toast(`Aircraft ${payload.registration} registered`,'success');
-    closeModal('modal-aircraft');
-    await loadAircraft();
-    renderFleet('all');
-  } catch(e) { toast(e.message,'error'); }
+  }
+
+  editingAircraftId = null;
+
+  closeModal('modal-aircraft');
+
+  await loadAircraft();
+
+  renderFleet('all');
+
+} catch(e) {
+  toast(e.message,'error');
+}
 }
 
 async function deleteAircraft(id, reg) {
@@ -1516,38 +2572,164 @@ function populateAircraftSelects() {
     if(el) el.innerHTML = '<option value="">Select aircraft…</option>' + opts;
   });
 }
+
 function openAircraftDetail(id) {
 
-    // Find aircraft
     const aircraft = allAircraft.find(a => a.id === id);
+    selectedAircraftId = id;
 
     if (!aircraft) {
         alert("Aircraft not found");
         return;
     }
+const aircraftDocs = allDocs.filter(
+    d => d.aircraft_id === aircraft.id
+);
 
-    // Find documents belonging to this aircraft
-    const aircraftDocs = allDocs.filter(
-        d => d.aircraft_id === aircraft.id
-    );
+const aircraftADs = allADs.filter(
+    ad => ad.aircraft_id === aircraft.id
+);
 
-    // If documents exist, open first document detail
-    if (aircraftDocs.length > 0) {
-        openDocDetail(aircraftDocs[0].id);
+const aircraftSBs = allSBs.filter(
+    sb => sb.aircraft_id === aircraft.id
+);
+
+const aircraftChecks = allChecks.filter(
+    c => c.aircraft_id === aircraft.id
+);
+const compliance = getAircraftComplianceSummary(aircraft);
+    document.getElementById("aircraft-detail-content").innerHTML = `
+        <div class="form-grid">
+
+            <div class="form-group">
+                <div class="form-label">REGISTRATION</div>
+                <div>${aircraft.registration || "—"}</div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-label">MSN</div>
+                <div>${aircraft.msn || "—"}</div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-label">AIRCRAFT TYPE</div>
+                <div>${aircraft.aircraft_type || "—"}</div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-label">OPERATOR</div>
+                <div>${aircraft.operator_name || "—"}</div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-label">TOTAL FH</div>
+                <div>${aircraft.total_fh || 0}</div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-label">TOTAL FC</div>
+                <div>${aircraft.total_fc || 0}</div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-label">STATUS</div>
+                <div>${aircraft.status || "—"}</div>
+            </div>
+
+<div class="form-group">
+    <div class="form-label">AIRWORTHINESS</div>
+    <div>
+  ${
+    getAircraftAirworthiness(aircraft) === 'AIRWORTHY'
+      ? '<span class="badge badge-green"><span class="dot"></span> AIRWORTHY</span>'
+      : '<span class="badge badge-red"><span class="dot"></span> NOT AIRWORTHY</span>'
+  }
+</div>
+<div class="form-group">
+    <div class="form-label">REASON</div>
+    <div>${getAircraftAirworthinessReason(aircraft)}</div>
+</div>
+
+</div>
+<div class="form-group">
+    <div class="form-label">DOCUMENTS</div>
+    <div>${aircraftDocs.length}</div>
+</div>
+
+
+<div class="form-group">
+    <div class="form-label">OPEN ADs</div>
+    <div>${aircraftADs.length}</div>
+</div>
+
+<div class="form-group">
+    <div class="form-label">OPEN SBs</div>
+    <div>${aircraftSBs.length}</div>
+</div>
+
+<div class="form-group">
+    <div class="form-label">CHECKS</div>
+    <div>${aircraftChecks.length}</div>
+</div>
+</div>
+
+<div style="margin-top:20px;border-top:1px solid var(--border);padding-top:16px;display:flex;gap:10px;flex-wrap:nowrap">
+
+  <button class="btn btn-primary"
+          onclick="viewAircraftDocs(${aircraft.id})">
+    <i class="ti ti-files"></i>
+    View Documents
+  </button>
+
+  <button class="btn btn-ghost"
+          onclick="viewAircraftADs(${aircraft.id})">
+    <i class="ti ti-certificate"></i>
+    View ADs
+  </button>
+
+  <button class="btn btn-ghost"
+        onclick="viewAircraftSBs(${aircraft.id})">
+  <i class="ti ti-file-certificate"></i>
+  View SBs
+</button>
+
+  <button class="btn btn-ghost"
+          onclick="viewAircraftChecks(${aircraft.id})">
+    <i class="ti ti-tool"></i>
+    View Maintenance
+  </button>
+
+</div>
+    `;
+
+    openModal('modal-aircraft-detail');
+}
+
+function backToAircraftProfile() {
+
+    if (previousView === "aircraft-profile") {
+
+        switchView("fleet");
+
+        openAircraftDetail(selectedAircraftId);
+
+        previousView = "";
+
         return;
+
     }
 
-    // No documents uploaded
-    alert(
-        aircraft.registration +
-        "\n\nNo documents uploaded for this aircraft."
-    );
 }
+
 // ─── Documents ────────────────────────────────────────────────────────────────
 async function loadDocs() {
   allDocs = await apiFetch('/documents');
+
   document.getElementById('nb-docs').textContent = allDocs.length;
+
   renderDocs('');
+
+  renderRecentActivity();
 }
 
 function renderDocs(typeFilter='', aircraftFilter=null) {
@@ -1581,6 +2763,396 @@ function renderDocs(typeFilter='', aircraftFilter=null) {
       </div></td>
     </tr>`;
   }).join('');
+}
+
+    renderRecentActivity();
+
+    showToast(
+        "Activity removed"
+    );
+let hiddenActivities = [];
+function removeActivity(docId) {
+
+    hiddenActivities.push(docId);
+
+    renderRecentActivity();
+
+}
+function removeAllActivities() {
+
+    hiddenActivities = allDocs.map(doc => doc.id);
+
+    renderRecentActivity();
+
+}
+
+function openActivityModal() {
+
+    const container =
+        document.getElementById("activity-modal-body");
+
+    const aircraftMap = {};
+    allAircraft.forEach(a =>
+        aircraftMap[a.id] = a.registration
+    );
+
+    const recentDocs = [...allDocs]
+        .sort((a, b) =>
+            new Date(b.uploaded_at || 0) -
+            new Date(a.uploaded_at || 0)
+        );
+    const searchBox =
+        document.getElementById("activity-search");
+
+        searchBox.value = "";
+        searchBox.oninput = function () {
+
+    const keyword =
+        this.value.toLowerCase();
+
+    const filteredDocs =
+        recentDocs.filter(doc =>
+
+            (doc.file_name || "")
+                .toLowerCase()
+                .includes(keyword)
+
+            ||
+
+            (aircraftMap[doc.aircraft_id] || "")
+                .toLowerCase()
+                .includes(keyword)
+
+            ||
+
+            (doc.document_type || "")
+                .toLowerCase()
+                .includes(keyword)
+
+        );
+
+    renderActivityList(
+        filteredDocs,
+        aircraftMap
+    );
+    if (filteredDocs.length === recentDocs.length) {
+
+    document.getElementById("activity-count").innerText =
+        `Showing ${recentDocs.length} activities`;
+
+} else {
+
+    document.getElementById("activity-count").innerText =
+        `Showing ${filteredDocs.length} of ${recentDocs.length} activities`;
+
+}
+
+};
+
+    renderActivityList(
+      recentDocs,
+      aircraftMap
+    );
+
+
+    document.getElementById("activity-modal").style.display = "flex";
+
+}
+
+function renderActivityList(docs, aircraftMap) {
+  if (!docs.length) {
+
+    document.getElementById("activity-list").innerHTML = `
+        <div style="
+            text-align:center;
+            padding:40px 20px;
+            color:var(--text3);
+        ">
+
+            <i
+                class="ti ti-search-off"
+                style="
+                    font-size:42px;
+                    display:block;
+                    margin-bottom:12px;
+                    color:var(--text3);
+                "
+            ></i>
+
+            <div style="
+                font-size:16px;
+                font-weight:600;
+                color:var(--text2);
+            ">
+                No activities found
+            </div>
+
+            <div style="
+                margin-top:8px;
+                font-size:13px;
+            ">
+                Try searching by document name,
+                aircraft registration or document type.
+            </div>
+
+        </div>
+    `;
+
+    return;
+
+}
+
+    document.getElementById("activity-list").innerHTML =
+        docs.map(doc => `
+        <div
+    style="
+        padding:12px 0;
+        border-bottom:1px solid var(--border);
+    "
+>
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+            ">
+
+                <div>
+
+                    <div
+                       style="
+                          font-weight:600;
+                          color:var(--accent);
+                          cursor:pointer;
+                   "
+                    onclick="openActivityDocument(${doc.id})"
+                  >
+                    📄 ${doc.file_name}
+                  </div>
+
+                    <div style="
+                        margin-top:4px;
+                        font-size:12px;
+                        color:var(--text3);
+                    ">
+                        ${aircraftMap[doc.aircraft_id] || doc.aircraft_id}
+                        •
+                        ${(doc.uploaded_at || "").substring(0,10)}
+                    </div>
+
+                </div>
+
+                <span class="badge badge-blue">
+                    ${doc.document_type || "GENERAL"}
+                </span>
+
+            </div>
+
+        </div>
+    `).join("");
+
+}
+function openActivityDocument(docId) {
+
+    documentSource = "activity";
+
+    closeActivityModal();
+
+    openDocDetail(docId);
+
+}
+
+let documentSource = "documents";
+let previousView = "";
+
+function goBackFromDocument() {
+
+    if (documentSource === "activity") {
+
+        switchView("dashboard");
+
+        openActivityModal();
+
+    }
+    else if (documentSource === "recent") {
+
+        switchView("dashboard");
+
+    }
+    else if (documentSource === "ad") {
+
+        switchView("airworthiness");
+
+    }
+    else if (documentSource === "sb") {
+
+        switchView("sbs");
+
+    }
+    else if (documentSource === "maintenance") {
+
+        switchView("maintenance");
+
+    }
+    else {
+
+        switchView("documents");
+
+    } 
+    documentSource = "documents";
+
+}
+    
+
+function closeActivityModal() {
+
+    document.getElementById("activity-modal").style.display = "none";
+
+}
+
+function renderRecentActivity() {
+
+    const container = document.getElementById('recent-activity-list');
+
+    if (!container) return;
+
+    if (!allDocs.length) {
+        container.innerHTML = `
+            <div style="color:var(--text3)">
+                No recent activity available
+            </div>
+        `;
+        return;
+    }
+
+    const aircraftMap = {};
+    allAircraft.forEach(a => aircraftMap[a.id] = a.registration);
+    
+    const recentDocs = [...allDocs]
+   .filter(doc => !hiddenActivities.includes(doc.id))
+   .sort((a, b) =>
+        new Date(b.uploaded_at || 0) -
+        new Date(a.uploaded_at || 0)
+   )
+   .slice(0, 5);
+      
+    container.innerHTML = recentDocs.map(doc => `
+        
+    <div
+    style="padding:10px 0;border-bottom:1px solid var(--border)"
+>
+  <div style="
+display:flex;
+align-items:center;
+justify-content:space-between;
+">
+
+<div style="
+display:flex;
+align-items:center;
+gap:8px;
+flex:1;
+">
+
+      <span
+          class="badge badge-blue"
+          style="cursor:pointer"
+          onclick="documentSource='recent'; openDocDetail(${doc.id})"
+      >
+          ${doc.document_type || 'GENERAL'}
+      </span>
+
+      <span
+          style="font-weight:600;cursor:pointer;color:var(--text1)"
+          onclick="documentSource='recent'; openDocDetail(${doc.id})"
+      >
+          📄 ${doc.file_name}
+      </span>
+
+  </div>
+
+  <i
+    class="ti ti-trash"
+    style="
+    color:var(--text3);
+    cursor:pointer;
+    font-size:16px;
+    margin-left:16px;
+    margin-right:12px;
+    flex-shrink:0;
+    transition:.2s;
+    "
+    title="Remove from Recent Activity"
+    onclick="removeActivity(${doc.id}); event.stopPropagation();"
+></i>
+
+</div>
+
+<div style="font-size:12px;color:var(--text3);margin-top:4px">
+    ${aircraftMap[doc.aircraft_id] || doc.aircraft_id}
+    •
+    ${(doc.uploaded_at || '').substring(0,10)}
+</div>
+        </div>
+    `).join('');
+}
+
+
+function showAircraftContextNavAD() {
+
+    if (!selectedAircraftId) return;
+
+    const nav = document.getElementById('aircraft-context-nav-ad');
+    const title = document.getElementById('current-aircraft-name-ad');
+
+    const aircraft = allAircraft.find(
+        a => a.id === selectedAircraftId
+    );
+
+    if (!aircraft) return;
+
+    nav.style.display = 'block';
+
+    title.textContent =
+        `Aircraft Context: ${aircraft.registration}`;
+}
+
+function showAircraftContextNavSB() {
+
+    if (!selectedAircraftId) return;
+
+    const nav = document.getElementById('aircraft-context-nav-sb');
+    const title = document.getElementById('current-aircraft-name-sb');
+
+    const aircraft = allAircraft.find(
+        a => a.id === selectedAircraftId
+    );
+
+    if (!aircraft) return;
+
+    nav.style.display = 'block';
+
+    title.textContent =
+        `Aircraft Context: ${aircraft.registration}`;
+}
+
+function showAircraftContextNavMaint() {
+
+    if (!selectedAircraftId) return;
+
+    const nav = document.getElementById('aircraft-context-nav-maint');
+    const title = document.getElementById('current-aircraft-name-maint');
+
+    const aircraft = allAircraft.find(
+        a => a.id === selectedAircraftId
+    );
+
+    if (!aircraft) return;
+
+    nav.style.display = 'block';
+
+    title.textContent =
+        `Aircraft Context: ${aircraft.registration}`;
 }
 
 // ─── Open Document Detail Page ────────────────────────────────────────────────
@@ -1675,10 +3247,28 @@ function openDocDetail(id) {
   document.getElementById('dd-extracted-text').textContent =
     doc.extracted_text || 'No text extracted — PDF may be scanned or image-only.';
 
-  // Switch to detail view (no nav highlight)
+    // Switch to detail view (no nav highlight)
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-doc-detail').classList.add('active');
   document.getElementById('breadcrumb').textContent = 'Platform / Documents / ' + doc.file_name;
+}
+
+function openAircraftDocument(aircraftId, source = "documents") {
+
+    documentSource = source;
+
+    const doc = allDocs.find(d => d.aircraft_id === aircraftId);
+
+    if (!doc) {
+
+        toast("No document found for this aircraft");
+
+        return;
+
+    }
+
+    openDocDetail(doc.id);
+
 }
 
 function setField(id, val) {
@@ -1869,7 +3459,20 @@ async function loadAlerts() {
   const r = await apiFetch('/alerts');
   document.getElementById('alert-sub').textContent = `${r.count} item(s) requiring attention`;
   const list = document.getElementById('alerts-list');
-  if(!r.alerts.length) { list.innerHTML='<div style="color:var(--text3);font-size:12px;font-family:var(--mono);padding:8px">No active alerts</div>'; return; }
+if(!r.alerts.length) {
+  list.innerHTML = `
+  <div style="padding:12px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;color:var(--green);font-weight:600">
+      <i class="ti ti-shield-check"></i>
+      Fleet Compliance Status
+    </div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:8px">✓ No overdue ADs</div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:8px">✓ No overdue maintenance checks</div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:8px">✓ All aircraft operational</div>
+    <div style="font-size:12px;color:var(--text2)">✓ Technical records up to date</div>
+  </div>`;
+  return;
+}
   list.innerHTML = r.alerts.slice(0,5).map(a=>{
     const cls = a.severity==='critical'?'notif-crit':'notif-warn';
     const icon = a.severity==='critical'?'ti-alert-triangle':'ti-clock';
@@ -1887,6 +3490,111 @@ async function loadDashboard() {
   loadAlerts();
   renderDashFleet();
 }
+// ─── Login Activity ─────────────────────────────────────────────
+async function loadLoginActivity() {
+
+    const activities = await apiFetch('/login-activity');
+
+    const tbody = document.getElementById("login-activity-body");
+    const totalLogins =
+    activities.filter(a => a.activity === "Login").length;
+
+const totalLogouts =
+    activities.filter(a => a.activity === "Logout").length;
+
+document.getElementById("total-logins").textContent =
+    totalLogins;
+
+document.getElementById("total-logouts").textContent =
+    totalLogouts;
+
+document.getElementById("total-activities").textContent =
+    activities.length;
+
+const lastLogin =
+    activities.find(a => a.activity === "Login");
+
+if (lastLogin) {
+
+    const dt = new Date(lastLogin.created_at);
+
+    const date = dt.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    });
+
+    const time = dt.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+    });
+
+    document.getElementById("last-login").innerHTML =
+        `${date}<br><span style="font-size:18px;">${time}</span>`;
+
+} else {
+
+    document.getElementById("last-login").textContent = "--";
+
+}
+
+    if (!activities.length) {
+
+        tbody.innerHTML = `
+            <tr class="empty-row">
+                <td colspan="6">
+                    No login activity found
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    tbody.innerHTML = activities.map(activity => {
+
+        const dt = new Date(activity.created_at);
+
+        const date = dt.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric"
+        });
+
+        const time = dt.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true
+        });
+
+        return `
+            <tr>
+
+                <td>${date}</td>
+
+                <td>${time}</td>
+
+                <td>${activity.user_name}</td>
+
+                <td>${activity.email}</td>
+
+                <td>
+                  ${
+                    activity.activity === "Login"
+                    ? '<span class="badge badge-green">Login</span>'
+                    : '<span class="badge badge-red">Logout</span>'
+              }
+                </td>
+
+                <td>${activity.ip_address}</td>
+
+            </tr>
+        `;
+
+    }).join("");
+
+}
 
 // ─── ADs ─────────────────────────────────────────────────────────────────────
 async function loadADs() {
@@ -1894,20 +3602,31 @@ async function loadADs() {
   renderADs('');
 }
 function renderADs(filter) {
-  const data = filter ? allADs.filter(a=>a.status===filter) : allADs;
-  const acMap = {}; allAircraft.forEach(a=>acMap[a.id]=a.registration);
-  document.getElementById('ads-body').innerHTML = data.length
-    ? data.map(a=>`<tr>
-        <td class="mono-cell" style="color:var(--text2)">${a.ad_number}</td>
-        <td class="mono-cell" style="color:var(--accent)">${acMap[a.aircraft_id]||a.aircraft_id}</td>
-        <td>${a.ata_chapter?`<span class="tag">${a.ata_chapter}</span>`:'—'}</td>
-        <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.description||'—'}</td>
-        <td class="mono-cell">${a.due_date||'—'}</td>
-        <td>${statusBadge(a.status)}</td>
-        <td><div class="row-actions">
-          <div class="icon-btn danger" onclick="deleteAD(${a.id})"><i class="ti ti-trash"></i></div>
-        </div></td>
-      </tr>`).join('')
+  let data = filter ? allADs.filter(a => a.status === filter) : allADs;
+
+if (selectedAircraftAD) {
+    data = data.filter(a => a.aircraft_id === selectedAircraftAD);
+}
+ const acMap = {}; allAircraft.forEach(a=>acMap[a.id]=a.registration);
+ document.getElementById('ads-body').innerHTML = data.length
+ ? data.map(a=>`<tr>
+  <td class="mono-cell" style="color:var(--text2)">${a.ad_number}</td>
+  <td class="mono-cell">
+    <span
+        style="color:var(--accent);cursor:pointer"
+        onclick="openAircraftDocument(${a.aircraft_id}, 'ad')"
+    >
+        ${acMap[a.aircraft_id] || a.aircraft_id}
+    </span>
+  </td>
+  <td>${a.ata_chapter?`<span class="tag">${a.ata_chapter}</span>`:'—'}</td>
+  <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.description||'—'}</td>
+  <td class="mono-cell">${a.due_date||'—'}</td>
+  <td>${statusBadge(a.status)}</td>
+  <td><div class="row-actions">
+    <div class="icon-btn danger" onclick="deleteAD(${a.id})"><i class="ti ti-trash"></i></div>
+    </div></td>
+    </tr>`).join('')
     : '<tr class="empty-row"><td colspan="7">No ADs found</td></tr>';
 }
 function filterADs(f, btn) {
@@ -1955,7 +3674,14 @@ function renderSBs(filter) {
   document.getElementById('sbs-body').innerHTML = data.length
     ? data.map(s=>`<tr>
         <td class="mono-cell" style="color:var(--text2)">${s.sb_number}</td>
-        <td class="mono-cell" style="color:var(--accent)">${acMap[s.aircraft_id]||s.aircraft_id}</td>
+        <td class="mono-cell">
+            <span
+                style="color:var(--accent);cursor:pointer"
+                onclick="openAircraftDocument(${s.aircraft_id}, 'sb')"
+            >
+                ${acMap[s.aircraft_id] || s.aircraft_id}
+             </span>
+         </td>
         <td>${s.ata_chapter?`<span class="tag">${s.ata_chapter}</span>`:'—'}</td>
         <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.description||'—'}</td>
         <td class="mono-cell">${s.due_date||'—'}</td>
@@ -2004,14 +3730,25 @@ async function loadChecks() {
   renderChecks('');
 }
 function renderChecks(filter) {
-  const data = filter ? allChecks.filter(c=>c.status===filter) : allChecks;
+  let data = filter ? allChecks.filter(c => c.status === filter) : allChecks;
+
+if (selectedAircraftCheck) {
+    data = data.filter(c => c.aircraft_id === selectedAircraftCheck);
+}
   const acMap = {}; allAircraft.forEach(a=>acMap[a.id]=a.registration);
   document.getElementById('checks-body').innerHTML = data.length
     ? data.map(c=>{
         const pct = c.status==='on-track'?70:c.status==='due-soon'?25:10;
         const col = c.status==='on-track'?'var(--green)':c.status==='due-soon'?'var(--amber)':'var(--red)';
         return `<tr>
-          <td class="mono-cell" style="color:var(--accent)">${acMap[c.aircraft_id]||c.aircraft_id}</td>
+          <td class="mono-cell">
+              <span
+                  style="color:var(--accent);cursor:pointer"
+                  onclick="openAircraftDocument(${c.aircraft_id}, 'maintenance')"
+             >
+                  ${acMap[c.aircraft_id] || c.aircraft_id}
+              </span>
+          </td>
           <td><span class="badge badge-blue">${c.check_type}-Check</span></td>
           <td class="mono-cell" style="color:var(--text3)">${c.last_completed||'—'}</td>
           <td class="mono-cell">${c.next_due_date||'—'}</td>
@@ -2277,7 +4014,7 @@ async function saveCorrections() {
 async function loginUser() {
 
   const email =
-    document.getElementById("login-email").value;
+  document.getElementById("login-email").value;
 
   const password =
     document.getElementById("login-password").value;
@@ -2291,10 +4028,10 @@ async function loginUser() {
         headers:{
           "Content-Type":"application/json"
         },
-        body:JSON.stringify({
-          email,
-          password
-        })
+        body: JSON.stringify({
+           email,
+           password
+      })
       }
     );
 
@@ -2325,7 +4062,37 @@ async function loginUser() {
     alert("Login failed");
   }
 }
+
+function toggleLoginPassword() {
+
+  const input =
+    document.getElementById("login-password");
+
+  if (input.type === "password") {
+
+    input.type = "text";
+
+  } else {
+
+    input.type = "password";
+
+  }
+
+}
+
 function logoutUser() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) return;
+  fetch(API + "/logout", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        user_id: user.id
+    })
+  });
 
   localStorage.removeItem("user");
 
@@ -2341,12 +4108,96 @@ function showSignup() {
   document.getElementById("signup-screen").style.display = "flex";
 
 }
+function showToast(message, type = "success") {
+
+  const toast = document.createElement("div");
+
+  toast.style.cssText = `
+    background:${type === "success"
+      ? "#0ea5e9"
+      : "#ef4444"};
+    color:white;
+    padding:12px 18px;
+    margin-bottom:10px;
+    border-radius:8px;
+    font-size:14px;
+    box-shadow:0 4px 12px rgba(0,0,0,.3);
+  `;
+
+  toast.innerText = message;
+
+const container =
+  document.getElementById("toast-container");
+
+if (!container) return;
+
+container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
+
+}
 
 function showLogin() {
 
   document.getElementById("signup-screen").style.display = "none";
 
   document.getElementById("auth-screen").style.display = "flex";
+
+}
+function showForgotPassword() {
+
+  document.getElementById(
+    "auth-screen"
+  ).style.display = "none";
+
+  document.getElementById(
+    "forgot-password-screen"
+  ).style.display = "flex";
+
+}
+
+async function sendSignupOtp() {
+
+  const email =
+    document.getElementById("signup-email").value;
+
+  const phone =
+    document.getElementById("signup-phone").value;
+
+  if (!email) {
+    alert("Please enter email first");
+    return;
+  }
+
+  try {
+
+    const response = await fetch(
+      API + "/send-signup-otp?email=" +
+      encodeURIComponent(email),
+      {
+        method: "POST"
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.detail || "Failed to send OTP");
+      return;
+    }
+
+    alert("OTP sent successfully. Check your email.");
+
+  }
+  catch (err) {
+
+    console.error(err);
+
+    alert("Failed to send OTP");
+
+  }
 
 }
 
@@ -2357,9 +4208,25 @@ async function signupUser() {
 
   const email =
     document.getElementById("signup-email").value;
+  
+  const phone =
+    document.getElementById("signup-phone").value;
 
   const password =
     document.getElementById("signup-password").value;
+  
+  const confirmPassword =
+  document.getElementById("signup-confirm-password").value;
+
+  const otp =
+    document.getElementById("signup-otp").value;
+  if (password !== confirmPassword) {
+    
+    alert("Passwords do not match");
+
+  return;
+
+}
 
   try {
 
@@ -2373,7 +4240,9 @@ async function signupUser() {
         body: JSON.stringify({
           name,
           email,
-          password
+           phone_number: phone,
+          password,
+          otp
         })
       }
     );
@@ -2385,7 +4254,9 @@ async function signupUser() {
       return;
     }
 
-    alert("Account created successfully!");
+    showToast(
+      "Account created successfully!"
+    );
 
     showLogin();
 
@@ -2426,5 +4297,11 @@ async function signupUser() {
 
 })();
 </script>
+<div id="toast-container" style="
+position:fixed;
+top:20px;
+right:20px;
+z-index:9999;
+"></div>
 </body>
 </html>

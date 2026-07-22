@@ -8,7 +8,10 @@ Extraction pipeline (priority order):
   4. Regex        — always runs as supplement / final fallback
 Set EXTRACTION_MODE in .env: claude | ollama | regex
 """
-
+from dotenv import load_dotenv
+import os
+import smtplib
+from email.mime.text import MIMEText
 from pathlib import Path
 import shutil, re, json, os, base64
 from datetime import date, datetime
@@ -17,9 +20,11 @@ from fastapi import FastAPI, Depends, UploadFile, File, Form, HTTPException, Que
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 from passlib.context import CryptContext
 import pdfplumber
 import httpx
+otp_store = {}
 
 from app.db import Base, engine, get_db
 from app.models import (
@@ -28,7 +33,9 @@ from app.models import (
     AirworthinessDirective,
     ServiceBulletin,
     MaintenanceCheck,
-    User
+    User,
+    OTP,
+    LoginActivity
 )
 from app.schemas import (
     AircraftCreate, AircraftResponse,
@@ -40,6 +47,8 @@ from app.schemas import (
     UserLogin,
     UserResponse
 )
+load_dotenv()
+
 # ─────────────────────────────────────────────────────────────────────────────
 # CONFIG
 # ─────────────────────────────────────────────────────────────────────────────
@@ -52,7 +61,11 @@ OLLAMA_URL_FALLBACK  = "http://localhost:11434"
 OLLAMA_MODEL         = os.getenv("OLLAMA_MODEL",         "llama3.2")
 OLLAMA_VISION_MODEL  = os.getenv("OLLAMA_VISION_MODEL",  "llava")
 POPPLER_PATH         = os.getenv("POPPLER_PATH",         r"E:\poppler\poppler-24.08.0\Library\bin")
-
+SMTP_HOST = os.getenv("SMTP_HOST")
+SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
+SMTP_USER = os.getenv("SMTP_USER")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
+SMTP_FROM = os.getenv("SMTP_FROM")
 # ─────────────────────────────────────────────────────────────────────────────
 # ATA MAP
 # ─────────────────────────────────────────────────────────────────────────────
@@ -80,6 +93,7 @@ app = FastAPI(
     version="6.0.0",
     description="Universal aviation records platform — Claude API + LLaVA vision + Regex. Any airline format.",
 )
+print("🚀 AERODOC MAIN.PY LOADED")
 
 app.add_middleware(
     CORSMiddleware,
@@ -112,6 +126,17 @@ def verify_password(
         plain_password,
         hashed_password
     )
+def send_email_otp(email: str, otp: str):
+    msg = MIMEText(f"Your AeroDoc OTP is: {otp}")
+
+    msg["Subject"] = "AeroDoc Verification OTP"
+    msg["From"] = SMTP_FROM
+    msg["To"] = email
+
+    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+        server.starttls()
+        server.login(SMTP_USER, SMTP_PASSWORD)
+        server.send_message(msg)
 
 # ═════════════════════════════════════════════════════════════════════════════
 # STEP 1 — PDF TEXT EXTRACTION
@@ -1762,6 +1787,55 @@ def get_alerts(db: Session = Depends(get_db)):
 # ─────────────────────────────────────────────────────────────
 # AUTHENTICATION
 # ─────────────────────────────────────────────────────────────
+@app.post("/send-signup-otp")
+def send_signup_otp(email: str, db: Session = Depends(get_db)):
+
+    import random
+
+    otp = str(random.randint(100000, 999999))
+
+    otp_record = OTP(
+        email=email,
+        otp=otp,
+        purpose="signup"
+    )
+
+    db.add(otp_record)
+    db.commit()
+
+    send_email_otp(email, otp)
+
+    return {
+        "message": "OTP sent successfully"
+    }
+@app.post("/verify-signup-otp")
+def verify_signup_otp(
+    email: str,
+    otp: str,
+    db: Session = Depends(get_db)
+):
+
+    otp_record = (
+        db.query(OTP)
+        .filter(
+            OTP.email == email,
+            OTP.otp == otp,
+            OTP.purpose == "signup"
+        )
+        .order_by(OTP.id.desc())
+        .first()
+    )
+
+    if not otp_record:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid OTP"
+        )
+
+    return {
+        "message": "OTP verified successfully"
+    }
+
 
 @app.post("/signup", response_model=UserResponse)
 def signup(user: UserSignup, db: Session = Depends(get_db)):
@@ -1777,9 +1851,26 @@ def signup(user: UserSignup, db: Session = Depends(get_db)):
             status_code=400,
             detail="Email already registered"
         )
+    otp_record = (
+        db.query(OTP)
+        .filter(
+            OTP.email == user.email,
+            OTP.otp == user.otp,
+            OTP.purpose == "signup"
+        )
+        .order_by(OTP.id.desc())
+        .first()
+    )
+    if not otp_record:
+        raise HTTPException(
+            status_code=400,
+            detail="OTP verification required"
+        )
+
     new_user = User(
-        full_name=user.name,
+        name=user.name,
         email=user.email,
+        phone_number=user.phone_number,
         password_hash=hash_password(user.password)
     )
 
@@ -1787,20 +1878,26 @@ def signup(user: UserSignup, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
 
-    
     return {
         "id": new_user.id,
-        "name": new_user.full_name,
+        "name": new_user.name,
         "email": new_user.email
-}
+    }
+  
 @app.post("/login")
 def login(user: UserLogin, db: Session = Depends(get_db)):
 
     existing_user = (
-        db.query(User)
-        .filter(User.email == user.email)
-        .first()
+    db.query(User)
+    .filter(
+        or_(
+            User.email == user.email,
+            User.phone_number == user.email
+        )
     )
+    .first()
+)
+    
 
     if not existing_user:
         raise HTTPException(
@@ -1816,10 +1913,71 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
             status_code=401,
             detail="Invalid email or password"
         )
+    login_record = LoginActivity(
+        user_id=existing_user.id,
+        user_name=existing_user.name,
+        email=existing_user.email,
+        activity="Login",
+        ip_address="127.0.0.1"
+    )
+    db.add(login_record)
+    db.commit()
+    return {
+        "message": "Login successful",
+        "id": existing_user.id,
+        "name": existing_user.name,
+        "email": existing_user.email
+    }
+    
+@app.post("/logout")
+def logout(payload: dict, db: Session = Depends(get_db)):
+
+    user_id = payload["user_id"]
+
+    existing_user = (
+        db.query(User)
+        .filter(User.id == user_id)
+        .first()
+    )
+
+    if not existing_user:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+
+    logout_record = LoginActivity(
+        user_id=existing_user.id,
+        user_name=existing_user.name,
+        email=existing_user.email,
+        activity="Logout",
+        ip_address="127.0.0.1"
+    )
+
+    db.add(logout_record)
+    db.commit()
 
     return {
-    "message": "Login successful",
-    "id": existing_user.id,
-    "name": existing_user.full_name,
-    "email": existing_user.email
-}
+        "message": "Logout recorded"
+    }
+@app.get("/login-activity")
+def get_login_activity(db: Session = Depends(get_db)):
+
+    activities = (
+        db.query(LoginActivity)
+        .order_by(LoginActivity.created_at.desc())
+        .all()
+    )
+
+    return [
+        {
+            "id": activity.id,
+            "user_id": activity.user_id,
+            "user_name": activity.user_name,
+            "email": activity.email,
+            "activity": activity.activity,
+            "ip_address": activity.ip_address,
+            "created_at": activity.created_at
+        }
+        for activity in activities
+    ]
